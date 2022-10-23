@@ -72,9 +72,11 @@ const List: FC<ListProps> = props => {
         const keyHandler = (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowUp':
+                    e.preventDefault()
                     setFocusInd(Math.max(focusInd - 1, 0))
                     break
                 case 'ArrowDown':
+                    e.preventDefault()
                     setFocusInd(Math.min(focusInd + 1, itemState.length - 1))
                     break
             }

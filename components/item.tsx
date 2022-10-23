@@ -25,22 +25,37 @@ const Item: FC<ItemProps> = props => {
 
     const keyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
+            e.preventDefault()
             props.addItem()
         } else if ((props.text.length === 0 && e.key === 'Backspace') || e.key === 'Delete') {
+            e.preventDefault()
             props.removeItem()
         }
     }
 
     useEffect(() => {
-        if (props.focus) {
-            textRef.current?.focus()
+        if (props.focus && textRef.current) {
+            textRef.current.focus()
+            const len = textRef.current.value.length
+            textRef.current.setSelectionRange(len, len)
         }
     }, [props.focus])
 
     return (
         <div className={styles.itemContainer}>
-            <input type="checkbox" defaultChecked={props.completed} onChange={toggleCompleted}/>
-            <input type="text" ref={textRef} defaultValue={props.text} onChange={changeText} onKeyDown={keyHandler} onMouseDown={props.setFocus} />
+            <input
+                type="checkbox"
+                defaultChecked={props.completed}
+                onChange={toggleCompleted}
+            />
+            <input
+                type="text"
+                ref={textRef}
+                defaultValue={props.text}
+                onChange={changeText}
+                onKeyDown={keyHandler}
+                onMouseDown={props.setFocus}
+            />
         </div>
     )
 }
