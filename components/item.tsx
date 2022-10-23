@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react'
-import styles from '../styles/Item.module.css'
+import styles from '../styles/List.module.css'
 
 type ItemProps = {
     text: string,
@@ -49,7 +49,9 @@ const Item: FC<ItemProps> = props => {
                 onChange={toggleCompleted}
             />
             <input
+                className={styles.itemText}
                 type="text"
+                placeholder="item..."
                 ref={textRef}
                 defaultValue={props.text}
                 onChange={changeText}
