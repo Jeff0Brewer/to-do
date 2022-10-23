@@ -56,12 +56,12 @@ const List: FC<ListProps> = props => {
 
     const removeItem = (i: number) => {
         const state = [...itemState]
-        const { key } = state.splice(i, 1)[0]
-        removeKey(key)
+        const removed = state.splice(i, 1)[0]
         if (state.length === 0) {
             state.push(getBlankItem())
         }
         setItemState(state)
+        removeKey(removed.key)
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import styles from '../styles/Item.module.css'
 
 type ItemProps = {
@@ -11,11 +11,8 @@ type ItemProps = {
 }
 
 const Item: FC<ItemProps> = props => {
-    const [textEmpty, setTextEmpty] = useState<boolean>(!props.text)
-
     const changeText = (e: React.ChangeEvent<HTMLInputElement>) => {
         props.setText(e.target.value)
-        setTextEmpty(!e.target.value)
     }
 
     const toggleCompleted = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +22,7 @@ const Item: FC<ItemProps> = props => {
     const keyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             props.addItem()
-        } else if ((textEmpty && e.key === 'Backspace') || e.key === 'Delete') {
+        } else if ((props.text.length === 0 && e.key === 'Backspace') || e.key === 'Delete') {
             props.removeItem()
         }
     }
