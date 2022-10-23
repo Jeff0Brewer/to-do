@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import Item from './item'
 import { getKey, removeKey } from '../lib/key'
 
@@ -37,6 +37,7 @@ const List: FC<ListProps> = props => {
             key: getKey(KEY_LEN)
         }
     }))
+    const [focusInd, setFocusInd] = useState<number>(0)
 
     const setItemText = (val: string, i: number) => {
         const state = [...itemState]
@@ -53,6 +54,7 @@ const List: FC<ListProps> = props => {
     const addItem = (i: number) => {
         const state = [...itemState.slice(0, i + 1), getBlankItem(), ...itemState.slice(i + 1)]
         setItemState(state)
+        setFocusInd(focusInd + 1)
     }
 
     const removeItem = (i: number) => {
@@ -62,8 +64,26 @@ const List: FC<ListProps> = props => {
             state.push(getBlankItem())
         }
         setItemState(state)
+        setFocusInd(Math.max(focusInd - 1, 0))
         removeKey(removed.key)
     }
+
+    useEffect(() => {
+        const keyHandler = (e: KeyboardEvent) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                    setFocusInd(Math.max(focusInd - 1, 0))
+                    break
+                case 'ArrowDown':
+                    setFocusInd(Math.min(focusInd + 1, itemState.length - 1))
+                    break
+            }
+        }
+        window.addEventListener('keydown', keyHandler)
+        return () => {
+            window.removeEventListener('keydown', keyHandler)
+        }
+    }, [focusInd, itemState])
 
     return (
         <section>
@@ -77,11 +97,13 @@ const List: FC<ListProps> = props => {
                     return <Item
                         text={item.text}
                         completed={item.completed}
+                        focus={focusInd === i}
                         key={item.key}
                         setText={(val: string) => setItemText(val, i)}
                         setCompleted={(val: boolean) => setItemCompleted(val, i)}
                         addItem={() => addItem(i)}
                         removeItem={() => removeItem(i)}
+                        setFocus={() => setFocusInd(i)}
                     />
                 })
             }</div>
