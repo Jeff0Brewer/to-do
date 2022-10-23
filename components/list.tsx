@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import Item from './item'
 import { getKey, removeKey } from '../lib/key'
+import styles from '../styles/List.module.css'
 
 type ItemData = {
     text: string,
@@ -88,9 +89,11 @@ const List: FC<ListProps> = props => {
     }, [focusInd, itemState])
 
     return (
-        <section>
+        <section className={styles.list}>
             <input
+                className={styles.title}
                 type="text"
+                placeholder="title..."
                 defaultValue={title}
                 onChange={e => setTitle(e.target.value)}
             />

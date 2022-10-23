@@ -1,0 +1,27 @@
+.list {
+    padding: 30px;
+}
+
+.list input[type=text] {
+    border: none;
+    background-color: transparent;
+    color: #fff;
+}
+
+.title {
+    width: 100vw;
+    max-width: var(--list-max-width);
+    height: 40px;
+    font-size: 35px;
+}
+
+.itemContainer {
+    display: flex;
+    color: #fff;
+    margin: 5px;
+}
+
+.itemText {
+    height: 22px;
+    font-size: 16px;
+}
