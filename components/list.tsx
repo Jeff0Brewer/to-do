@@ -29,6 +29,7 @@ const getBlankItem = () => {
 }
 
 const List: FC<ListProps> = props => {
+    const [title, setTitle] = useState<string>(props.title)
     const [itemState, setItemState] = useState<Array<ListItem>>(props.items.map((data: ItemData) => {
         return {
             text: data.text,
@@ -66,7 +67,11 @@ const List: FC<ListProps> = props => {
 
     return (
         <section>
-            <input type="text" defaultValue={props.title} />
+            <input
+                type="text"
+                defaultValue={title}
+                onChange={e => setTitle(e.target.value)}
+            />
             <div>{
                 itemState.map((item: ListItem, i: number) => {
                     return <Item
