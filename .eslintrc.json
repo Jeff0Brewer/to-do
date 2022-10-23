@@ -28,8 +28,7 @@
     ],
     "rules": {
         "react/prop-types": "off",
-        "indent": ["error", 4],
-        "@typescript-eslint/indent": ["error", 4]
+        "indent": ["error", 4, { "SwitchCase": 1 }]
     },
     "settings": {
         "react": {
