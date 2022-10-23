@@ -3,8 +3,8 @@ import styles from '../styles/Item.module.css'
 
 type ItemProps = {
     text: string,
-    setText: (value: string) => void,
     completed: boolean,
+    setText: (value: string) => void,
     setCompleted: (value: boolean) => void
 }
 
