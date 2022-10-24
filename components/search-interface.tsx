@@ -18,6 +18,7 @@ type SearchInterfaceProps = {
 
 const SearchInterface: FC<SearchInterfaceProps> = props => {
     const [listKeys, setListKeys] = useState<Array<ListKey>>([])
+    const [searchVal, setSearchVal] = useState<string>('')
 
     useEffect(() => {
         clearKeys()
@@ -29,16 +30,22 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
         }))
     }, [props.lists])
 
+    const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchVal(e.target.value.toLowerCase())
+    }
+
     return (
         <section className={styles.interface}>
             <span>
-                <input type='text' />
+                <input type='text' onChange={updateSearch}/>
                 <button onClick={props.toggleSearch}>X</button>
             </span>
             <div className={styles.lists}>{
-                listKeys.map((listKey: ListKey, i: number) => {
-                    return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} />
-                })
+                listKeys
+                    .filter((listKey: ListKey) => listKey.list.title.toLowerCase().includes(searchVal))
+                    .map((listKey: ListKey, i: number) => {
+                        return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} />
+                    })
             }</div>
         </section>
     )
