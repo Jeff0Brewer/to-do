@@ -9,10 +9,12 @@ type SearchItemProps = {
 }
 
 const SearchItem: FC<SearchItemProps> = props => {
+    const title = props.list.title ? props.list.title : 'untitled note'
+    const dateStr = dateToString(props.list.date)
     return (
         <span className={styles.searchItem}>
-            <p className={styles.searchTitle}>{props.list.title}</p>
-            <p className={styles.searchDate}>{dateToString(props.list.date)}</p>
+            <p className={styles.searchTitle}>{title}</p>
+            <p className={styles.searchDate}>{dateStr}</p>
             <button onClick={props.deleteList}>delete</button>
         </span>
     )
