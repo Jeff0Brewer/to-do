@@ -1,6 +1,7 @@
 type ItemData = {
     text: string,
     completed: boolean,
+    key?: string,
     children?: Array<ItemData>
 }
 

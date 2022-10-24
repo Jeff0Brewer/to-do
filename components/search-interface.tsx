@@ -11,7 +11,7 @@ type ListKey = {
 
 type SearchInterfaceProps = {
     lists: Array<ListData>,
-    setList: (list: ListData) => void,
+    setListInd: (ind: number) => void,
     toggleSearch: () => void,
     deleteList: (ind: number) => void
 }
@@ -34,6 +34,11 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
         setSearchVal(e.target.value.toLowerCase())
     }
 
+    const selectList = (ind: number) => {
+        props.setListInd(ind)
+        props.toggleSearch()
+    }
+
     return (
         <section className={styles.interface}>
             <span>
@@ -44,7 +49,7 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
                 listKeys
                     .filter((listKey: ListKey) => listKey.list.title.toLowerCase().includes(searchVal))
                     .map((listKey: ListKey, i: number) => {
-                        return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} />
+                        return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} selectList={() => selectList(i)} />
                     })
             }</div>
         </section>

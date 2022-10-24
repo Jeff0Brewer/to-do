@@ -5,7 +5,8 @@ import styles from '../styles/SearchInterface.module.css'
 
 type SearchItemProps = {
     list: ListData,
-    deleteList: () => void
+    deleteList: () => void,
+    selectList: () => void
 }
 
 const SearchItem: FC<SearchItemProps> = props => {
@@ -13,8 +14,10 @@ const SearchItem: FC<SearchItemProps> = props => {
     const dateStr = dateToString(props.list.date)
     return (
         <span className={styles.searchItem}>
-            <p className={styles.searchTitle}>{title}</p>
-            <p className={styles.searchDate}>{dateStr}</p>
+            <a className={styles.searchItemSelect} onClick={props.selectList}>
+                <p className={styles.searchTitle}>{title}</p>
+                <p className={styles.searchDate}>{dateStr}</p>
+            </a>
             <button onClick={props.deleteList}>delete</button>
         </span>
     )

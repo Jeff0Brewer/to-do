@@ -12,6 +12,10 @@
     margin: 10px;
 }
 
+.searchItemSelect {
+    display: flex;
+}
+
 .searchTitle, .searchDate {
     margin: 5px;
 }

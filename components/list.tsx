@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
 import Item from './item'
 import { getKey, removeKey } from '../lib/key'
@@ -13,7 +13,9 @@ type ListItem = {
 }
 
 type ListProps = {
-    list: ListData
+    lists: Array<ListData>,
+    setLists: (lists: Array<ListData>) => void,
+    listInd: number
 }
 
 const KEY_LEN = 8
@@ -24,6 +26,21 @@ const getBlankItem = () => {
         completed: false,
         key: getKey(KEY_LEN),
         children: []
+    }
+}
+
+const dataToItem = (data: ItemData) => {
+    const children: Array<ListItem> = []
+    if (data?.children) {
+        data.children.forEach((child: ItemData) => {
+            children.push(dataToItem(child))
+        })
+    }
+    return {
+        text: data.text,
+        completed: data.completed,
+        key: getKey(KEY_LEN),
+        children
     }
 }
 
@@ -46,30 +63,19 @@ const getArr = (state: Array<ListItem>, inds: Array<number>) => {
     return arr
 }
 
-const dataToItem = (data: ItemData) => {
-    const children: Array<ListItem> = []
-    if (data?.children) {
-        data.children.forEach((child: ItemData) => {
-            children.push(dataToItem(child))
-        })
-    }
-    return {
-        text: data.text,
-        completed: data.completed,
-        key: getKey(KEY_LEN),
-        children
-    }
-}
-
 const List: FC<ListProps> = props => {
-    const [itemState, setItemState] = useState<Array<ListItem>>(props.list.items.map(dataToItem))
-    const [title, setTitle] = useState<string>(props.list.title)
+    const [itemState, setItemState] = useState<Array<ListItem>>(props.lists[props.listInd].items.map(dataToItem))
+    const [title, setTitle] = useState<string>(props.lists[props.listInd].title)
     const [focusInd, setFocusInd] = useState<Array<number>>([0])
+    const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        setItemState(props.list.items.map(dataToItem))
-        setTitle(props.list.title)
-    }, [props.list])
+        setItemState(props.lists[props.listInd].items.map(dataToItem))
+        setTitle(props.lists[props.listInd].title)
+        if (titleRef.current) {
+            titleRef.current.value = props.lists[props.listInd].title
+        }
+    }, [props.lists, props.listInd])
 
     useEffect(() => {
         window.addEventListener('keydown', keyHandler)
@@ -78,18 +84,33 @@ const List: FC<ListProps> = props => {
         }
     }, [focusInd, itemState])
 
+    const updateItems = (state: Array<ListItem>) => {
+        setItemState(state)
+        const lists = [...props.lists]
+        lists[props.listInd].items = state
+        props.setLists(lists)
+    }
+
+    const updateTitle = (title: string) => {
+        setFocusInd([-1])
+        setTitle(title)
+        const lists = [...props.lists]
+        lists[props.listInd].title = title
+        props.setLists(lists)
+    }
+
     const setItemText = (val: string, inds: Array<number>) => {
         const state = [...itemState]
         const item = getItem(state, inds)
         item.text = val
-        setItemState(state)
+        updateItems(state)
     }
 
     const setItemCompleted = (val: boolean, inds: Array<number>) => {
         const state = [...itemState]
         const item = getItem(state, inds)
         item.completed = val
-        setItemState(state)
+        updateItems(state)
     }
 
     const addItem = (inds: Array<number>) => {
@@ -100,7 +121,7 @@ const List: FC<ListProps> = props => {
         const focus = [...focusInd]
         focus[focus.length - 1] += 1
 
-        setItemState(state)
+        updateItems(state)
         setFocusInd(focus)
     }
 
@@ -119,7 +140,7 @@ const List: FC<ListProps> = props => {
             focus[focus.length - 1] = Math.max(0, focus[focus.length - 1] - 1)
         }
 
-        setItemState(state)
+        updateItems(state)
         setFocusInd(focus)
         removeKey(removed.key)
     }
@@ -176,7 +197,8 @@ const List: FC<ListProps> = props => {
         focus.pop()
         focus[focus.length - 1] += 1
         parentArr.splice(focus[focus.length - 1], 0, item)
-        setItemState(state)
+
+        updateItems(state)
         setFocusInd(focus)
     }
 
@@ -191,7 +213,8 @@ const List: FC<ListProps> = props => {
         focus[focus.length - 1] -= 1
         const len = arr[focus[focus.length - 1]].children.push(item)
         focus.push(len - 1)
-        setItemState(state)
+
+        updateItems(state)
         setFocusInd(focus)
     }
 
@@ -252,10 +275,11 @@ const List: FC<ListProps> = props => {
         <section className={styles.list}>
             <input
                 className={styles.title}
+                ref={titleRef}
                 type="text"
                 placeholder="title..."
                 defaultValue={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => updateTitle(e.target.value)}
             />
             <div>{
                 itemState.map((item: ListItem, i: number) => {
