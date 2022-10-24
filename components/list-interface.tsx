@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
-import { ListData, ItemData } from '../lib/types'
+import SearchInterface from './search-interface'
+import { ListData } from '../lib/types'
 import styles from '../styles/ListInterface.module.css'
 
 const lists: Array<ListData> = [
@@ -101,7 +102,9 @@ const ListInterface: FC<ListInterfaceProps> = props => {
             <div className={styles.buttons}>
                 <button onClick={newList} >new</button>
                 <button onClick={deleteList}>delete</button>
+                <button>search</button>
             </div>
+            <SearchInterface lists={lists} setList={props.setList} />
         </section>
     )
 }
