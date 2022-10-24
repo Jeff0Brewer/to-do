@@ -4,6 +4,13 @@ type ItemData = {
     children?: Array<ItemData>
 }
 
-export {
-    ItemData
+type ListData = {
+    title: string,
+    date: Date,
+    items: Array<ItemData>
+}
+
+export type {
+    ItemData,
+    ListData
 }

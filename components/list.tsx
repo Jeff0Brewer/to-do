@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { ItemData } from '../lib/types'
+import { ListData, ItemData } from '../lib/types'
 import Item from './item'
 import { getKey, removeKey } from '../lib/key'
 import { arrayEqual } from '../lib/array'
@@ -13,9 +13,7 @@ type ListItem = {
 }
 
 type ListProps = {
-    title: string,
-    date: Date,
-    items: Array<ItemData>
+    list: ListData
 }
 
 const KEY_LEN = 8
@@ -64,9 +62,14 @@ const dataToItem = (data: ItemData) => {
 }
 
 const List: FC<ListProps> = props => {
-    const [itemState, setItemState] = useState<Array<ListItem>>(props.items.map(dataToItem))
-    const [title, setTitle] = useState<string>(props.title)
+    const [itemState, setItemState] = useState<Array<ListItem>>(props.list.items.map(dataToItem))
+    const [title, setTitle] = useState<string>(props.list.title)
     const [focusInd, setFocusInd] = useState<Array<number>>([0])
+
+    useEffect(() => {
+        setItemState(props.list.items.map(dataToItem))
+        setTitle(props.list.title)
+    }, [props.list])
 
     useEffect(() => {
         window.addEventListener('keydown', keyHandler)
