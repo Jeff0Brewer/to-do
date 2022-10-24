@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react'
 import { ItemData } from '../lib/types'
 import Item from './item'
 import { getKey, removeKey } from '../lib/key'
+import { arrayEqual } from '../lib/array'
 import styles from '../styles/List.module.css'
 
 type ListItem = {
@@ -17,18 +18,8 @@ type ListProps = {
     items: Array<ItemData>
 }
 
-const arrayEqual = (a: Array<any>, b: Array<any>) => {
-    if (a === b) { return true }
-    if (a.length !== b.length) { return false }
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) {
-            return false
-        }
-    }
-    return true
-}
-
 const KEY_LEN = 8
+
 const getBlankItem = () => {
     return {
         text: '',
@@ -57,27 +48,32 @@ const getArr = (state: Array<ListItem>, inds: Array<number>) => {
     return arr
 }
 
-const List: FC<ListProps> = props => {
-    const dataToItem = (data: ItemData) => {
-        const children: Array<ListItem> = []
-        if (data?.children) {
-            data.children.forEach((child: ItemData) => {
-                children.push(dataToItem(child))
-            })
-        }
-        return {
-            text: data.text,
-            completed: data.completed,
-            key: getKey(KEY_LEN),
-            children
-        }
+const dataToItem = (data: ItemData) => {
+    const children: Array<ListItem> = []
+    if (data?.children) {
+        data.children.forEach((child: ItemData) => {
+            children.push(dataToItem(child))
+        })
     }
+    return {
+        text: data.text,
+        completed: data.completed,
+        key: getKey(KEY_LEN),
+        children
+    }
+}
+
+const List: FC<ListProps> = props => {
     const [itemState, setItemState] = useState<Array<ListItem>>(props.items.map(dataToItem))
     const [title, setTitle] = useState<string>(props.title)
     const [focusInd, setFocusInd] = useState<Array<number>>([0])
+
     useEffect(() => {
-        console.log(itemState)
-    }, [itemState])
+        window.addEventListener('keydown', keyHandler)
+        return () => {
+            window.removeEventListener('keydown', keyHandler)
+        }
+    }, [focusInd, itemState])
 
     const setItemText = (val: string, inds: Array<number>) => {
         const state = [...itemState]
@@ -125,6 +121,53 @@ const List: FC<ListProps> = props => {
         removeKey(removed.key)
     }
 
+    const keyHandler = (e: KeyboardEvent) => {
+        switch (e.key) {
+            case 'ArrowUp': {
+                e.preventDefault()
+                let focus = [...focusInd]
+                focus[focus.length - 1] -= 1
+                if (focus[focus.length - 1] < 0) {
+                    focus.pop()
+                } else {
+                    let item = getItem(itemState, focus)
+                    while (item.children.length > 0) {
+                        const ind = item.children.length - 1
+                        focus.push(ind)
+                        item = item.children[ind]
+                    }
+                }
+                if (focus.length === 0) {
+                    focus = [0]
+                }
+                setFocusInd(focus)
+                break
+            }
+            case 'ArrowDown': {
+                e.preventDefault()
+                let focus = [...focusInd]
+                const item = getItem(itemState, focus)
+                if (item.children.length > 0) {
+                    focus.push(0)
+                } else {
+                    focus[focus.length - 1] += 1
+                    let arr = getArr(itemState, focus)
+                    while (focus[focus.length - 1] >= arr.length) {
+                        focus.pop()
+                        if (focus.length === 0) {
+                            focus = [...focusInd]
+                            break
+                        }
+                        focus[focus.length - 1] += 1
+                        arr = getArr(itemState, focus)
+                    }
+                }
+                setFocusInd(focus)
+                break
+            }
+        }
+    }
+
     const itemToComponents = (item: ListItem, inds: Array<number>) => {
         const component = <Item
             text={item.text}
@@ -153,25 +196,6 @@ const List: FC<ListProps> = props => {
             </div>
         )
     }
-
-    // useEffect(() => {
-    //    const keyHandler = (e: KeyboardEvent) => {
-    //        switch (e.key) {
-    //            case 'ArrowUp':
-    //                e.preventDefault()
-    //                setFocusInd(Math.max(focusInd - 1, 0))
-    //                break
-    //            case 'ArrowDown':
-    //                e.preventDefault()
-    //                setFocusInd(Math.min(focusInd + 1, itemState.length - 1))
-    //                break
-    //        }
-    //    }
-    //    window.addEventListener('keydown', keyHandler)
-    //    return () => {
-    //        window.removeEventListener('keydown', keyHandler)
-    //    }
-    // }, [focusInd, itemState])
 
     return (
         <section className={styles.list}>
