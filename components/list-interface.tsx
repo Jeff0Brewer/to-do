@@ -3,7 +3,7 @@ import SearchInterface from './search-interface'
 import { ListData } from '../lib/types'
 import styles from '../styles/ListInterface.module.css'
 
-const lists: Array<ListData> = [
+const testLists: Array<ListData> = [
     {
         title: 'list 0',
         date: new Date(),
@@ -74,37 +74,50 @@ const getEmptyList = () => {
 }
 
 const ListInterface: FC<ListInterfaceProps> = props => {
+    const [lists, setLists] = useState<Array<ListData>>(testLists)
     const [listInd, setListInd] = useState<number>(0)
+    const [searching, setSearching] = useState<boolean>(false)
 
     useEffect(() => {
         props.setList(lists[listInd])
     }, [])
 
     const newList = () => {
+        const newLists = [...lists]
         const emptyList = getEmptyList()
-        lists.push(emptyList)
-        const ind = lists.length - 1
+        newLists.push(emptyList)
+        const ind = newLists.length - 1
         setListInd(ind)
-        props.setList(lists[ind])
+        props.setList(newLists[ind])
+        setLists(newLists)
     }
 
-    const deleteList = () => {
-        lists.splice(listInd, 1)
-        if (lists.length === 0) {
-            lists.push(getEmptyList())
+    const deleteList = (ind: number) => {
+        const newLists = [...lists]
+        newLists.splice(ind, 1)
+        if (newLists.length === 0) {
+            newLists.push(getEmptyList())
         }
         setListInd(0)
-        props.setList(lists[0])
+        props.setList(newLists[0])
+        setLists(newLists)
+    }
+
+    const toggleSearch = () => {
+        setSearching(!searching)
     }
 
     return (
         <section>
             <div className={styles.buttons}>
                 <button onClick={newList} >new</button>
-                <button onClick={deleteList}>delete</button>
-                <button>search</button>
-            </div>
-            <SearchInterface lists={lists} setList={props.setList} />
+                <button onClick={() => deleteList(listInd)}>delete</button>
+                <button onClick={toggleSearch}>search</button>
+            </div>{
+                searching
+                    ? <SearchInterface lists={lists} setList={props.setList} toggleSearch={toggleSearch} deleteList={deleteList} />
+                    : <></>
+            }
         </section>
     )
 }

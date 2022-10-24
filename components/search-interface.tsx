@@ -4,29 +4,40 @@ import { ListData } from '../lib/types'
 import { getKey, clearKeys } from '../lib/key'
 import styles from '../styles/SearchInterface.module.css'
 
+type ListKey = {
+    list: ListData,
+    key: string
+}
+
 type SearchInterfaceProps = {
     lists: Array<ListData>,
-    setList: (list: ListData) => void
+    setList: (list: ListData) => void,
+    toggleSearch: () => void,
+    deleteList: (ind: number) => void
 }
 
 const SearchInterface: FC<SearchInterfaceProps> = props => {
-    const [keys, setKeys] = useState<Array<string>>([])
+    const [listKeys, setListKeys] = useState<Array<ListKey>>([])
 
     useEffect(() => {
         clearKeys()
-        const newKeys = []
-        for (let i = 0; i < props.lists.length; i++) {
-            newKeys.push(getKey(5))
-        }
-        setKeys(newKeys)
+        setListKeys(props.lists.map((list: ListData) => {
+            return {
+                list,
+                key: getKey(5)
+            }
+        }))
     }, [props.lists])
 
     return (
         <section className={styles.interface}>
-            <input type='text' />
+            <span>
+                <input type='text' />
+                <button onClick={props.toggleSearch}>X</button>
+            </span>
             <div className={styles.lists}>{
-                props.lists.map((list: ListData, i: number) => {
-                    return <SearchItem key={keys[i]} list={list} />
+                listKeys.map((listKey: ListKey, i: number) => {
+                    return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} />
                 })
             }</div>
         </section>

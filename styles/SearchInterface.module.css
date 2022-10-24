@@ -7,5 +7,14 @@
     background-color: #000;
 }
 
+.searchItem {
+    display: flex;
+    margin: 10px;
+}
+
+.searchTitle, .searchDate {
+    margin: 5px;
+}
+
 .lists {
 }
