@@ -1,4 +1,4 @@
-const keys = new Set()
+let keys = new Set()
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
 const getKey = (len: number) => {
@@ -16,7 +16,12 @@ const removeKey = (key: string) => {
     keys.delete(key)
 }
 
+const clearKeys = () => {
+    keys = new Set()
+}
+
 export {
     getKey,
-    removeKey
+    removeKey,
+    clearKeys
 }

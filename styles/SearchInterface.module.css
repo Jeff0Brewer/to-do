@@ -1,0 +1,24 @@
+.interface {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #000;
+}
+
+.searchItem {
+    display: flex;
+    margin: 10px;
+}
+
+.searchItemSelect {
+    display: flex;
+}
+
+.searchTitle, .searchDate {
+    margin: 5px;
+}
+
+.lists {
+}
