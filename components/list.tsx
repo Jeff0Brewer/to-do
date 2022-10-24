@@ -8,16 +8,16 @@ type ItemData = {
     completed: boolean
 }
 
-type ListProps = {
-    title: string,
-    date: Date,
-    items: Array<ItemData>
-}
-
 type ListItem = {
     text: string,
     completed: boolean,
     key: string
+}
+
+type ListProps = {
+    title: string,
+    date: Date,
+    items: Array<ItemData>
 }
 
 const KEY_LEN = 8
