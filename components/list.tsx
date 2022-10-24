@@ -121,48 +121,96 @@ const List: FC<ListProps> = props => {
         removeKey(removed.key)
     }
 
+    const decrementFocus = () => {
+        let focus = [...focusInd]
+        focus[focus.length - 1] -= 1
+        if (focus[focus.length - 1] < 0) {
+            focus.pop()
+        } else {
+            let item = getItem(itemState, focus)
+            while (item.children.length > 0) {
+                const ind = item.children.length - 1
+                focus.push(ind)
+                item = item.children[ind]
+            }
+        }
+        if (focus.length === 0) {
+            focus = [0]
+        }
+        setFocusInd(focus)
+    }
+
+    const incrementFocus = () => {
+        let focus = [...focusInd]
+        const item = getItem(itemState, focus)
+        if (item.children.length > 0) {
+            focus.push(0)
+        } else {
+            focus[focus.length - 1] += 1
+            let arr = getArr(itemState, focus)
+            while (focus[focus.length - 1] >= arr.length) {
+                focus.pop()
+                if (focus.length === 0) {
+                    focus = [...focusInd]
+                    break
+                }
+                focus[focus.length - 1] += 1
+                arr = getArr(itemState, focus)
+            }
+        }
+        setFocusInd(focus)
+    }
+
+    const decrementIndent = () => {
+        const state = [...itemState]
+        const focus = [...focusInd]
+        if (focus.length <= 1) {
+            return
+        }
+        const parentArr = getArr(state, focus.slice(0, -1))
+        const thisArr = parentArr[focus[focus.length - 2]].children
+        const item = thisArr.splice(focus[focus.length - 1], 1)[0]
+        focus.pop()
+        focus[focus.length - 1] += 1
+        parentArr.splice(focus[focus.length - 1], 0, item)
+        setItemState(state)
+        setFocusInd(focus)
+    }
+
+    const incrementIndent = () => {
+        const state = [...itemState]
+        const focus = [...focusInd]
+        const arr = getArr(state, focus)
+        if (arr.length <= 1 || focus[focus.length - 1] === 0) {
+            return
+        }
+        const item = arr.splice(focus[focus.length - 1], 1)[0]
+        focus[focus.length - 1] -= 1
+        const len = arr[focus[focus.length - 1]].children.push(item)
+        focus.push(len - 1)
+        setItemState(state)
+        setFocusInd(focus)
+    }
+
     const keyHandler = (e: KeyboardEvent) => {
         switch (e.key) {
             case 'ArrowUp': {
                 e.preventDefault()
-                let focus = [...focusInd]
-                focus[focus.length - 1] -= 1
-                if (focus[focus.length - 1] < 0) {
-                    focus.pop()
-                } else {
-                    let item = getItem(itemState, focus)
-                    while (item.children.length > 0) {
-                        const ind = item.children.length - 1
-                        focus.push(ind)
-                        item = item.children[ind]
-                    }
-                }
-                if (focus.length === 0) {
-                    focus = [0]
-                }
-                setFocusInd(focus)
+                decrementFocus()
                 break
             }
             case 'ArrowDown': {
                 e.preventDefault()
-                let focus = [...focusInd]
-                const item = getItem(itemState, focus)
-                if (item.children.length > 0) {
-                    focus.push(0)
+                incrementFocus()
+                break
+            }
+            case 'Tab': {
+                e.preventDefault()
+                if (e.shiftKey) {
+                    decrementIndent()
                 } else {
-                    focus[focus.length - 1] += 1
-                    let arr = getArr(itemState, focus)
-                    while (focus[focus.length - 1] >= arr.length) {
-                        focus.pop()
-                        if (focus.length === 0) {
-                            focus = [...focusInd]
-                            break
-                        }
-                        focus[focus.length - 1] += 1
-                        arr = getArr(itemState, focus)
-                    }
+                    incrementIndent()
                 }
-                setFocusInd(focus)
                 break
             }
         }
