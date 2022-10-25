@@ -70,16 +70,6 @@ const List: FC<ListProps> = props => {
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        if (titleRef.current) {
-            titleRef.current.focus()
-            const len = titleRef.current.value.length
-            if (len) {
-                titleRef.current.setSelectionRange(len, len)
-            }
-        }
-    }, [props.lists.length, props.listInd])
-
-    useEffect(() => {
         setItemState(props.lists[props.listInd].items.map(dataToItem))
         setTitle(props.lists[props.listInd].title)
         if (titleRef.current) {
