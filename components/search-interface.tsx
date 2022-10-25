@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
+import { IoClose } from 'react-icons/io5'
 import SearchItem from './search-item'
 import { ListData } from '../lib/types'
 import { getKey, clearKeys } from '../lib/key'
@@ -40,19 +41,21 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
     }
 
     return (
-        <section className={styles.interface}>
-            <span>
-                <input type='text' onChange={updateSearch}/>
-                <button onClick={props.toggleSearch}>X</button>
-            </span>
-            <div className={styles.lists}>{
-                listKeys
-                    .filter((listKey: ListKey) => listKey.list.title.toLowerCase().includes(searchVal))
-                    .map((listKey: ListKey, i: number) => {
-                        return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} selectList={() => selectList(i)} />
-                    })
-            }</div>
-        </section>
+        <div className={styles.interfaceWrap}>
+            <section className={styles.interface}>
+                <span className={styles.searchHeader}>
+                    <input className={styles.searchInput} type='text' placeholder='search...' onChange={updateSearch}/>
+                    <button className={styles.searchClose} onClick={props.toggleSearch}><IoClose /></button>
+                </span>
+                <div className={styles.lists}>{
+                    listKeys
+                        .filter((listKey: ListKey) => listKey.list.title.toLowerCase().includes(searchVal))
+                        .map((listKey: ListKey, i: number) => {
+                            return <SearchItem key={listKey.key} list={listKey.list} deleteList={() => props.deleteList(i)} selectList={() => selectList(i)} />
+                        })
+                }</div>
+            </section>
+        </div>
     )
 }
 

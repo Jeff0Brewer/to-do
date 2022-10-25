@@ -8,14 +8,7 @@
 }
 
 .list input[type=text] {
-    background-color: transparent;
-    color: #fff;
     width: 100%;
-}
-
-.list input[type=text]:focus {
-    outline-style: none;
-    background: linear-gradient(to right, #909 0%, transparent 110%);
 }
 
 .title {

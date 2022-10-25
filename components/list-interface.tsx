@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
-import { IoIosAdd, IoMdTrash, IoMdSearch } from 'react-icons/io'
+import React, { FC, useState } from 'react'
+import { IoMdTrash, IoMdSearch } from 'react-icons/io'
 import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
 import LabelButton from './label-button'
@@ -53,16 +53,15 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     }
 
     return (
-        <section>
-            <div className={styles.buttons}>
-                <LabelButton symbol={<HiPlus/>} text={'create'} onClick={newList} />
-                <LabelButton symbol={<IoMdTrash/>} text={'delete'} onClick={() => deleteList(props.listInd)} />
-                <LabelButton symbol={<IoMdSearch/>} text={'search'} onClick={toggleSearch} />
-            </div>{
-                searching
-                    ? <SearchInterface lists={props.lists} setListInd={props.setListInd} toggleSearch={toggleSearch} deleteList={deleteList} />
-                    : <></>
-            }
+        <section>{
+            searching
+                ? <SearchInterface lists={props.lists} setListInd={props.setListInd} toggleSearch={toggleSearch} deleteList={deleteList} />
+                : <div className={styles.buttons}>
+                    <LabelButton symbol={<HiPlus/>} text={'create'} onClick={newList} />
+                    <LabelButton symbol={<IoMdTrash/>} text={'delete'} onClick={() => deleteList(props.listInd)} />
+                    <LabelButton symbol={<IoMdSearch/>} text={'search'} onClick={toggleSearch} />
+                </div>
+        }
         </section>
     )
 }

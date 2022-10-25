@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { IoMdTrash } from 'react-icons/io'
 import { ListData } from '../lib/types'
 import { dateToString } from '../lib/date'
 import styles from '../styles/SearchInterface.module.css'
@@ -12,14 +13,20 @@ type SearchItemProps = {
 const SearchItem: FC<SearchItemProps> = props => {
     const title = props.list.title ? props.list.title : 'untitled note'
     const dateStr = dateToString(props.list.date)
+
+    const deleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
+        props.deleteList()
+    }
+
     return (
-        <span className={styles.searchItem}>
-            <a className={styles.searchItemSelect} onClick={props.selectList}>
-                <p className={styles.searchTitle}>{title}</p>
+        <a className={styles.searchItem} onClick={props.selectList}>
+            <p className={styles.searchTitle}>{title}</p>
+            <div className={styles.itemEnd}>
                 <p className={styles.searchDate}>{dateStr}</p>
-            </a>
-            <button onClick={props.deleteList}>delete</button>
-        </span>
+                <button className={styles.searchDelete} onClick={deleteItem}><IoMdTrash /></button>
+            </div>
+        </a>
     )
 }
 

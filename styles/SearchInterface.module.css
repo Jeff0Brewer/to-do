@@ -1,24 +1,87 @@
-.interface {
-    position: fixed;
+.interfaceWrap {
+    position: absolute;
     left: 0;
-    right: 0;
     top: 0;
-    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    min-height: 100vh;
     background-color: #000;
+}
+
+.interface {
+    width: 100vw;
+    max-width: 800px;
+    height: fit-content;
+    margin: 30px;
+    padding: 30px;
+    background-color: #111;
+    border-radius: 10px;
+}
+
+.interface button:hover {
+    color: #aaa;
+}
+
+.searchHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    width: calc(100% - 60px);
+    height: 40px;
+    padding-left: 10px;
+    border: solid #fff;
+    border-width: 0 0 1px 0;
+    border-radius: 5px 5px 0 0;
+    font-size: 25px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.searchClose {
+    width: 40px;
+    font-size: 30px;
 }
 
 .searchItem {
     display: flex;
-    margin: 10px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.searchItemSelect {
+.searchItem:hover {
+    background-color: #909;
+}
+
+.itemEnd {
     display: flex;
+    align-items: center;
 }
 
-.searchTitle, .searchDate {
-    margin: 5px;
+.searchTile, .searchDate {
+    letter-spacing: 1px;
 }
 
-.lists {
+.searchTitle {
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.searchDate {
+    font-size: 16px;
+    color: #aaa;
+}
+
+.searchDelete {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 25px;
+    margin-left: 30px;
 }
