@@ -8,24 +8,19 @@
     margin: 5px;
     overflow: hidden;
     width: 40px;
+    height: 40px;
     transition: width 400ms ease-in-out;
+    transition-delay: .5s;
 }
 
 .button:hover {
     width: 110px;
+    transition-delay: 0s;
 }
 
 .button:hover .text {
     opacity: 1;
-}
-
-
-.symbol {
-    display: flex;
-    align-items: center;
-    justifty-content: center;
-    font-size: 30px;
-    width: 40px;
+    transition-delay: 0s;
 }
 
 .text {
@@ -33,4 +28,13 @@
     font-family: 'Poppins', sans-serif;
     opacity: 0;
     transition: opacity 200ms ease-in-out;
+    transition-delay: .5s;
+}
+
+.symbol {
+    display: flex;
+    align-items: center;
+    justifty-content: center;
+    font-size: 30px;
+    width: 40px;
 }
