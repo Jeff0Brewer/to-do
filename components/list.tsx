@@ -286,6 +286,7 @@ const List: FC<ListProps> = props => {
                 placeholder="title..."
                 defaultValue={title}
                 onChange={e => updateTitle(e.target.value)}
+                onMouseDown={() => setFocusInd([])}
             />
             <div>{
                 itemState.map((item: ListItem, i: number) => {
