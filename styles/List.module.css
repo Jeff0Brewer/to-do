@@ -1,18 +1,32 @@
 .list {
+    width: 100vw;
+    max-width: 700px;
     padding: 30px;
+    border-radius: 10px;
+    background-color: #111;
+    overflow-x: hidden;
 }
 
 .list input[type=text] {
-    border: none;
     background-color: transparent;
     color: #fff;
+    width: 100%;
+}
+
+.list input[type=text]:focus {
+    outline-style: none;
+    background: linear-gradient(to right, #909 0%, transparent 110%);
 }
 
 .title {
-    width: 100vw;
-    max-width: var(--list-max-width);
-    height: 40px;
+    border: solid #fff;
+    border-width: 0 0 1px 0;
+    border-radius: 5px 5px 0 0;
+    height: 50px;
+    margin: 0 0 10px 0;
     font-size: 35px;
+    font-family: 'Poppins', sans-serif;
+    padding-left: 10px;
 }
 
 .indent {
@@ -21,11 +35,49 @@
 
 .itemContainer {
     display: flex;
+    align-items: center;
     color: #fff;
-    margin: 5px;
+    margin: 2px;
 }
 
 .itemText {
-    height: 22px;
+    border: none;
+    letter-spacing: 1px;
+    height: 28px;
     font-size: 16px;
+    padding-left: 5px;
+    border-radius: 5px 0 0 5px;
+}
+
+.itemCheck {
+    appearance: none;
+    background-color: transparent;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    display: grid;
+    place-content: center;
+}
+
+.itemCheck:hover {
+    background-color: #909;
+}
+
+.itemCheck:checked {
+    background-color: #fff;
+    border: none;
+}
+
+.itemChecked:hover:checked {
+    background-color: #999;
+}
+
+.itemCheck:checked::before {
+    content: "";
+    display: block;
+    width: 7px;
+    height: 7px;
+    background-color: #000;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
