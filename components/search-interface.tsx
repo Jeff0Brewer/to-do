@@ -47,7 +47,7 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
                     <input className={styles.searchInput} type='text' placeholder='search...' onChange={updateSearch}/>
                     <button className={styles.searchClose} onClick={props.toggleSearch}><IoClose /></button>
                 </span>
-                <div className={styles.lists}>{
+                <div className={styles.searchItems}>{
                     listKeys
                         .filter((listKey: ListKey) => listKey.list.title.toLowerCase().includes(searchVal))
                         .map((listKey: ListKey, i: number) => {
