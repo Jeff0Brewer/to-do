@@ -55,7 +55,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     return (
         <section>
             <div className={styles.buttons}>
-                <LabelButton symbol={<HiPlus/>} text={'new'} onClick={newList} />
+                <LabelButton symbol={<HiPlus/>} text={'create'} onClick={newList} />
                 <LabelButton symbol={<IoMdTrash/>} text={'delete'} onClick={() => deleteList(props.listInd)} />
                 <LabelButton symbol={<IoMdSearch/>} text={'search'} onClick={toggleSearch} />
             </div>{

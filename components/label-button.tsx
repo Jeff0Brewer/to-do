@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { FaBeer } from 'react-icons/fa'
 import styles from '../styles/LabelButton.module.css'
 
 type LabelButtonProps = {
