@@ -13,5 +13,6 @@
     .buttons {
         left: 0;
         justify-content: space-around;
+        height: var(--gutter-height);
     }
 }

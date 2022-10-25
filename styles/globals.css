@@ -3,6 +3,7 @@
 :root {
     --highlight-color: #909;
     --hover-color: #aaa;
+    --gutter-height: 50px;
 }
 
 * {
