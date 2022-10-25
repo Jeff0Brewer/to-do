@@ -72,8 +72,12 @@ const List: FC<ListProps> = props => {
     useEffect(() => {
         if (titleRef.current) {
             titleRef.current.focus()
+            const len = titleRef.current.value.length
+            if (len) {
+                titleRef.current.setSelectionRange(len, len)
+            }
         }
-    }, [props.listInd])
+    }, [props.lists.length, props.listInd])
 
     useEffect(() => {
         setItemState(props.lists[props.listInd].items.map(dataToItem))
