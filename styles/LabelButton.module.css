@@ -1,0 +1,51 @@
+.button {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    overflow: hidden;
+}
+
+.text {
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    opacity: 0;
+}
+
+.symbol {
+    width: 40px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 900px) {
+    .button {
+        transition: width 400ms ease-in-out;
+        transition-delay: .5s;
+    }
+
+    .text {
+        transition: opacity 200ms ease-in-out;
+        transition-delay: .5s;
+    }
+
+    .button:hover {
+        width: 110px;
+        transition-delay: 0s;
+    }
+
+    .button:hover .text {
+        opacity: 1;
+        transition-delay: 0s;
+    }
+
+}
+
+@media (max-width: 900px) {
+    .button:hover .symbol {
+        color: var(--hover-color);
+    }
+}

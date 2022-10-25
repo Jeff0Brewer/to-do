@@ -66,7 +66,7 @@ const getArr = (state: Array<ListItem>, inds: Array<number>) => {
 const List: FC<ListProps> = props => {
     const [itemState, setItemState] = useState<Array<ListItem>>(props.lists[props.listInd].items.map(dataToItem))
     const [title, setTitle] = useState<string>(props.lists[props.listInd].title)
-    const [focusInd, setFocusInd] = useState<Array<number>>([0])
+    const [focusInd, setFocusInd] = useState<Array<number>>([])
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -92,7 +92,7 @@ const List: FC<ListProps> = props => {
     }
 
     const updateTitle = (title: string) => {
-        setFocusInd([-1])
+        setFocusInd([])
         setTitle(title)
         const lists = [...props.lists]
         lists[props.listInd].title = title
@@ -146,6 +146,7 @@ const List: FC<ListProps> = props => {
     }
 
     const decrementFocus = () => {
+        if (!focusInd.length) { return }
         let focus = [...focusInd]
         focus[focus.length - 1] -= 1
         if (focus[focus.length - 1] < 0) {
@@ -165,22 +166,27 @@ const List: FC<ListProps> = props => {
     }
 
     const incrementFocus = () => {
+        if (!focusInd.length) {
+            setFocusInd([0])
+            return
+        }
         let focus = [...focusInd]
         const item = getItem(itemState, focus)
         if (item.children.length > 0) {
             focus.push(0)
-        } else {
-            focus[focus.length - 1] += 1
-            let arr = getArr(itemState, focus)
-            while (focus[focus.length - 1] >= arr.length) {
-                focus.pop()
-                if (focus.length === 0) {
-                    focus = [...focusInd]
-                    break
-                }
-                focus[focus.length - 1] += 1
-                arr = getArr(itemState, focus)
+            setFocusInd(focus)
+            return
+        }
+        focus[focus.length - 1] += 1
+        let arr = getArr(itemState, focus)
+        while (focus[focus.length - 1] >= arr.length) {
+            focus.pop()
+            if (focus.length === 0) {
+                focus = [...focusInd]
+                break
             }
+            focus[focus.length - 1] += 1
+            arr = getArr(itemState, focus)
         }
         setFocusInd(focus)
     }
@@ -272,21 +278,24 @@ const List: FC<ListProps> = props => {
     }
 
     return (
-        <section className={styles.list}>
-            <input
-                className={styles.title}
-                ref={titleRef}
-                type="text"
-                placeholder="title..."
-                defaultValue={title}
-                onChange={e => updateTitle(e.target.value)}
-            />
-            <div>{
-                itemState.map((item: ListItem, i: number) => {
-                    return itemToComponents(item, [i])
-                })
-            }</div>
-        </section>
+        <div className={styles.listWrap}>
+            <section className={styles.list}>
+                <input
+                    className={styles.title}
+                    ref={titleRef}
+                    type="text"
+                    placeholder="title..."
+                    defaultValue={title}
+                    onChange={e => updateTitle(e.target.value)}
+                    onMouseDown={() => setFocusInd([])}
+                />
+                <div>{
+                    itemState.map((item: ListItem, i: number) => {
+                        return itemToComponents(item, [i])
+                    })
+                }</div>
+            </section>
+        </div>
     )
 }
 
