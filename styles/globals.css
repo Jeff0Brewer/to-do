@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 :root {
-    --list-max-width: 400px;
+    --highlight-color: #909;
+    --hover-color: #aaa;
 }
 
 * {
@@ -27,7 +28,7 @@ input[type=text] {
 
 input[type=text]:focus {
     outline-style: none;
-    background: linear-gradient(to right, #909 0%, transparent 110%);
+    background: linear-gradient(to right, var(--highlight-color) 0%, transparent 110%);
 }
 
 button {

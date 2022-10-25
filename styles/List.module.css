@@ -1,13 +1,12 @@
 .listWrap {
     position: relative;
     z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100vw;
     padding: 30px;
     min-height: 100vh;
-    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .list {
@@ -24,18 +23,14 @@
 }
 
 .title {
+    height: 50px;
     border: solid #fff;
     border-width: 0 0 1px 0;
     border-radius: 5px 5px 0 0;
-    height: 50px;
     margin: 0 0 10px 0;
+    padding-left: 10px;
     font-size: 35px;
     font-family: 'Poppins', sans-serif;
-    padding-left: 10px;
-}
-
-.indent {
-    margin: 0 0 0 20px;
 }
 
 .itemContainer {
@@ -66,16 +61,12 @@
 }
 
 .itemCheck:hover {
-    background-color: #909;
+    background-color: var(--highlight-color);
 }
 
 .itemCheck:checked {
     background-color: #fff;
     border: none;
-}
-
-.itemChecked:hover:checked {
-    background-color: #999;
 }
 
 .itemCheck:checked::before {
@@ -85,6 +76,10 @@
     height: 7px;
     background-color: #000;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.indent {
+    margin: 0 0 0 20px;
 }
 
 @media (max-width: 900px) {

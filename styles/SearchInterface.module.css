@@ -1,13 +1,13 @@
 .interfaceWrap {
     position: absolute;
-    z-index: 2;
     left: 0;
     top: 0;
-    display: flex;
-    justify-content: center;
+    z-index: 2;
     width: 100vw;
     min-height: 100vh;
     padding: 30px;
+    display: flex;
+    justify-content: center;
     background-color: #000;
 }
 
@@ -16,12 +16,12 @@
     max-width: 800px;
     height: fit-content;
     padding: 30px;
-    background-color: #111;
     border-radius: 10px;
+    background-color: #111;
 }
 
 .interface button:hover {
-    color: #aaa;
+    color: var(--hover-color);
 }
 
 .searchHeader {
@@ -47,22 +47,17 @@
 }
 
 .searchItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
     height: 40px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
 }
 
 .searchItem:hover {
-    background-color: #909;
-}
-
-.itemEnd {
-    display: flex;
-    align-items: center;
+    background-color: var(--highlight-color);
 }
 
 .searchTile, .searchDate {
@@ -76,15 +71,20 @@
 
 .searchDate {
     font-size: 16px;
-    color: #aaa;
+    color: #999;
 }
 
 .searchDelete {
+    font-size: 25px;
+    margin-left: 30px;
     background: transparent;
     border: none;
     color: #fff;
-    font-size: 25px;
-    margin-left: 30px;
+}
+
+.itemEnd {
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width: 900px) {
