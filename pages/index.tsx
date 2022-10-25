@@ -4,7 +4,6 @@ import Head from 'next/head'
 import ListInterface from '../components/list-interface'
 import List from '../components/list'
 import { ListData } from '../lib/types'
-import styles from '../styles/Home.module.css'
 
 const testLists: Array<ListData> = [
     {
@@ -69,9 +68,7 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <ListInterface lists={lists} setLists={setLists} listInd={listInd} setListInd={setListInd} />
-            <div className={styles.center}>
-                <List lists={lists} setLists={setLists} listInd={listInd} />
-            </div>
+            <List lists={lists} setLists={setLists} listInd={listInd} />
         </>
 
     )

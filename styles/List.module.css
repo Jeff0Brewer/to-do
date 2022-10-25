@@ -1,3 +1,15 @@
+.listWrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    padding: 30px;
+    min-height: 100vh;
+    overflow-y: scroll;
+}
+
 .list {
     width: 100vw;
     max-width: 700px;
@@ -73,4 +85,17 @@
     height: 7px;
     background-color: #000;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+@media (max-width: 900px) {
+    .listWrap {
+        padding: 0;
+    }
+
+    .list {
+        width: 100vw;
+        max-width: 100vw;
+        min-height: 100vh;
+        border-radius: 0;
+    }
 }

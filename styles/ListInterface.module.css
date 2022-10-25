@@ -1,6 +1,17 @@
 .buttons {
     position: fixed;
+    z-index: 3;
     right: 0;
     bottom: 0;
     display: flex;
+    padding: 0 10px 10px 0;
+    background-color: #000;
+    border-radius: 10px 0 0 0;
+}
+
+@media (max-width: 900px) {
+    .buttons {
+        left: 0;
+        justify-content: space-around;
+    }
 }

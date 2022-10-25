@@ -278,22 +278,24 @@ const List: FC<ListProps> = props => {
     }
 
     return (
-        <section className={styles.list}>
-            <input
-                className={styles.title}
-                ref={titleRef}
-                type="text"
-                placeholder="title..."
-                defaultValue={title}
-                onChange={e => updateTitle(e.target.value)}
-                onMouseDown={() => setFocusInd([])}
-            />
-            <div>{
-                itemState.map((item: ListItem, i: number) => {
-                    return itemToComponents(item, [i])
-                })
-            }</div>
-        </section>
+        <div className={styles.listWrap}>
+            <section className={styles.list}>
+                <input
+                    className={styles.title}
+                    ref={titleRef}
+                    type="text"
+                    placeholder="title..."
+                    defaultValue={title}
+                    onChange={e => updateTitle(e.target.value)}
+                    onMouseDown={() => setFocusInd([])}
+                />
+                <div>{
+                    itemState.map((item: ListItem, i: number) => {
+                        return itemToComponents(item, [i])
+                    })
+                }</div>
+            </section>
+        </div>
     )
 }
 
