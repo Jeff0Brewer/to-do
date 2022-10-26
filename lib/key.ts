@@ -1,13 +1,14 @@
 let keys = new Set()
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+const KEY_LEN = 8
 
-const getKey = (len: number) => {
+const getKey = () => {
     let key = ''
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < KEY_LEN; i++) {
         key += chars.charAt(Math.floor(Math.random() * chars.length))
     }
     if (keys.has(key)) {
-        key = getKey(len)
+        key = getKey()
     }
     return key
 }

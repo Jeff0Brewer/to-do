@@ -5,46 +5,16 @@ import { getKey, removeKey } from '../lib/key'
 import { arrayEqual } from '../lib/array'
 import styles from '../styles/List.module.css'
 
-type ListItem = {
-    text: string,
-    completed: boolean,
-    key: string,
-    children: Array<ListItem>
-}
-
-type ListProps = {
-    lists: Array<ListData>,
-    setLists: (lists: Array<ListData>) => void,
-    listInd: number
-}
-
-const KEY_LEN = 8
-
 const getBlankItem = () => {
     return {
         text: '',
         completed: false,
-        key: getKey(KEY_LEN),
+        key: getKey(),
         children: []
     }
 }
 
-const dataToItem = (data: ItemData) => {
-    const children: Array<ListItem> = []
-    if (data?.children) {
-        data.children.forEach((child: ItemData) => {
-            children.push(dataToItem(child))
-        })
-    }
-    return {
-        text: data.text,
-        completed: data.completed,
-        key: getKey(KEY_LEN),
-        children
-    }
-}
-
-const getItem = (state: Array<ListItem>, inds: Array<number>) => {
+const getItem = (state: Array<ItemData>, inds: Array<number>) => {
     let item = state[inds[0]]
     for (let i = 1; i < inds.length; i++) {
         item = item.children[inds[i]]
@@ -52,7 +22,7 @@ const getItem = (state: Array<ListItem>, inds: Array<number>) => {
     return item
 }
 
-const getArr = (state: Array<ListItem>, inds: Array<number>) => {
+const getArr = (state: Array<ItemData>, inds: Array<number>) => {
     if (inds.length === 1) {
         return state
     }
@@ -63,14 +33,20 @@ const getArr = (state: Array<ListItem>, inds: Array<number>) => {
     return arr
 }
 
+type ListProps = {
+    lists: Array<ListData>,
+    setLists: (lists: Array<ListData>) => void,
+    listInd: number
+}
+
 const List: FC<ListProps> = props => {
-    const [itemState, setItemState] = useState<Array<ListItem>>(props.lists[props.listInd].items.map(dataToItem))
+    const [itemState, setItemState] = useState<Array<ItemData>>(props.lists[props.listInd].items)
     const [title, setTitle] = useState<string>(props.lists[props.listInd].title)
     const [focusInd, setFocusInd] = useState<Array<number>>([])
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        setItemState(props.lists[props.listInd].items.map(dataToItem))
+        setItemState(props.lists[props.listInd].items)
         setTitle(props.lists[props.listInd].title)
         if (titleRef.current) {
             titleRef.current.value = props.lists[props.listInd].title
@@ -84,7 +60,7 @@ const List: FC<ListProps> = props => {
         }
     }, [focusInd, itemState])
 
-    const updateItems = (state: Array<ListItem>) => {
+    const updateItems = (state: Array<ItemData>) => {
         setItemState(state)
         const lists = [...props.lists]
         lists[props.listInd].items = state
@@ -248,7 +224,7 @@ const List: FC<ListProps> = props => {
         }
     }
 
-    const itemToComponents = (item: ListItem, inds: Array<number>) => {
+    const itemToComponents = (item: ItemData, inds: Array<number>) => {
         const component = <Item
             text={item.text}
             completed={item.completed}
@@ -264,7 +240,7 @@ const List: FC<ListProps> = props => {
             return component
         }
         const children: Array<React.ReactElement> = []
-        item.children.forEach((child: ListItem, i: number) => {
+        item.children.forEach((child: ItemData, i: number) => {
             children.push(itemToComponents(child, [...inds, i]))
         })
         return (
@@ -290,7 +266,7 @@ const List: FC<ListProps> = props => {
                     onMouseDown={() => setFocusInd([])}
                 />
                 <div>{
-                    itemState.map((item: ListItem, i: number) => {
+                    itemState.map((item: ItemData, i: number) => {
                         return itemToComponents(item, [i])
                     })
                 }</div>
