@@ -15,14 +15,6 @@ type ItemProps = {
 const Item: FC<ItemProps> = props => {
     const textRef = useRef<HTMLInputElement>(null)
 
-    const changeText = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.setText(e.target.value)
-    }
-
-    const toggleCompleted = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.setCompleted(e.target.checked)
-    }
-
     const keyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault()
@@ -42,12 +34,12 @@ const Item: FC<ItemProps> = props => {
     }, [props.focus])
 
     return (
-        <div className={styles.itemContainer} onMouseDown={props.setFocus}>
+        <div className={styles.itemContainer}>
             <input
                 className={styles.itemCheck}
                 type="checkbox"
                 defaultChecked={props.completed}
-                onChange={toggleCompleted}
+                onChange={e => props.setCompleted(e.target.checked)}
             />
             <input
                 className={styles.itemText}
@@ -55,8 +47,9 @@ const Item: FC<ItemProps> = props => {
                 placeholder="item..."
                 ref={textRef}
                 defaultValue={props.text}
-                onChange={changeText}
+                onChange={e => props.setText(e.target.value)}
                 onKeyDown={keyHandler}
+                onMouseDown={props.setFocus}
             />
         </div>
     )

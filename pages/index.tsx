@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import ListInterface from '../components/list-interface'
 import List from '../components/list'
 import { ListData } from '../lib/types'
+import { getKey } from '../lib/key'
 
 const testLists: Array<ListData> = [
     {
@@ -12,39 +13,53 @@ const testLists: Array<ListData> = [
         items: [
             {
                 text: '1sdf',
-                completed: true
+                completed: true,
+                children: [],
+                key: getKey()
             }, {
                 text: '345f',
                 completed: false,
                 children: [
                     {
                         text: 'fdsa',
-                        completed: true
+                        completed: true,
+                        children: [],
+                        key: getKey()
                     }
-                ]
+                ],
+                key: getKey()
             }, {
                 text: 'mhmmmmm',
                 completed: false,
                 children: [
                     {
                         text: 'a',
-                        completed: false
+                        completed: false,
+                        children: [],
+                        key: getKey()
                     }, {
                         text: 'b',
-                        completed: true
+                        completed: true,
+                        children: [],
+                        key: getKey()
                     }, {
                         text: 'c',
                         completed: false,
                         children: [
                             {
                                 text: 'd',
-                                completed: false
+                                completed: false,
+                                children: [],
+                                key: getKey()
                             }
-                        ]
+                        ],
+                        key: getKey()
                     }
-                ]
+                ],
+                key: getKey()
             }
-        ]
+        ],
+        key: getKey()
     },
     {
         title: 'list 1',
@@ -52,9 +67,12 @@ const testLists: Array<ListData> = [
         items: [
             {
                 text: 'mdmd',
-                completed: false
+                completed: false,
+                children: [],
+                key: getKey()
             }
-        ]
+        ],
+        key: getKey()
     }
 ]
 

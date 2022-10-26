@@ -1,14 +1,15 @@
 type ItemData = {
     text: string,
     completed: boolean,
-    key?: string,
-    children?: Array<ItemData>
+    children: Array<ItemData>,
+    key: string
 }
 
 type ListData = {
     title: string,
     date: Date,
-    items: Array<ItemData>
+    items: Array<ItemData>,
+    key: string
 }
 
 export type {
