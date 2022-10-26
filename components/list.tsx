@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
 import Item from './item'
-import { getKey, removeKey } from '../lib/key'
+import { getKey } from '../lib/key'
 import { arrayEqual } from '../lib/array'
 import styles from '../styles/List.module.css'
 
@@ -14,19 +14,19 @@ const getBlankItem = () => {
     }
 }
 
-const getItem = (state: Array<ItemData>, inds: Array<number>) => {
-    let item = state[inds[0]]
+const getItem = (state: ListData, inds: Array<number>) => {
+    let item = state.items[inds[0]]
     for (let i = 1; i < inds.length; i++) {
         item = item.children[inds[i]]
     }
     return item
 }
 
-const getArr = (state: Array<ItemData>, inds: Array<number>) => {
+const getArr = (state: ListData, inds: Array<number>) => {
     if (inds.length === 1) {
-        return state
+        return state.items
     }
-    let arr = state[inds[0]].children
+    let arr = state.items[inds[0]].children
     for (let i = 1; i < inds.length - 1; i++) {
         arr = arr[inds[i]].children
     }
@@ -40,13 +40,11 @@ type ListProps = {
 }
 
 const List: FC<ListProps> = props => {
-    const [itemState, setItemState] = useState<Array<ItemData>>(props.lists[props.listInd].items)
     const [title, setTitle] = useState<string>(props.lists[props.listInd].title)
     const [focusInd, setFocusInd] = useState<Array<number>>([])
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        setItemState(props.lists[props.listInd].items)
         setTitle(props.lists[props.listInd].title)
         if (titleRef.current) {
             titleRef.current.value = props.lists[props.listInd].title
@@ -58,12 +56,11 @@ const List: FC<ListProps> = props => {
         return () => {
             window.removeEventListener('keydown', keyHandler)
         }
-    }, [focusInd, itemState])
+    }, [focusInd, props.lists])
 
-    const updateItems = (state: Array<ItemData>) => {
-        setItemState(state)
+    const updateItems = (state: Array<ListData>) => {
         const lists = [...props.lists]
-        lists[props.listInd].items = state
+        lists[props.listInd].items = state[props.listInd].items
         props.setLists(lists)
     }
 
@@ -76,22 +73,22 @@ const List: FC<ListProps> = props => {
     }
 
     const setItemText = (val: string, inds: Array<number>) => {
-        const state = [...itemState]
-        const item = getItem(state, inds)
+        const state = [...props.lists]
+        const item = getItem(state[props.listInd], inds)
         item.text = val
         updateItems(state)
     }
 
     const setItemCompleted = (val: boolean, inds: Array<number>) => {
-        const state = [...itemState]
-        const item = getItem(state, inds)
+        const state = [...props.lists]
+        const item = getItem(state[props.listInd], inds)
         item.completed = val
         updateItems(state)
     }
 
     const addItem = (inds: Array<number>) => {
-        const state = [...itemState]
-        const arr = getArr(state, inds)
+        const state = [...props.lists]
+        const arr = getArr(state[props.listInd], inds)
         arr.splice(inds[inds.length - 1] + 1, 0, getBlankItem())
 
         const focus = [...focusInd]
@@ -102,11 +99,11 @@ const List: FC<ListProps> = props => {
     }
 
     const removeItem = (inds: Array<number>) => {
-        const state = [...itemState]
-        const arr = getArr(state, inds)
-        const removed = arr.splice(inds[inds.length - 1], 1)[0]
-        if (state.length === 0) {
-            state.push(getBlankItem())
+        const state = [...props.lists]
+        const arr = getArr(state[props.listInd], inds)
+        arr.splice(inds[inds.length - 1], 1)
+        if (arr.length === 0) {
+            arr.push(getBlankItem())
         }
 
         let focus = [...focusInd]
@@ -118,7 +115,6 @@ const List: FC<ListProps> = props => {
 
         updateItems(state)
         setFocusInd(focus)
-        removeKey(removed.key)
     }
 
     const decrementFocus = () => {
@@ -128,7 +124,7 @@ const List: FC<ListProps> = props => {
         if (focus[focus.length - 1] < 0) {
             focus.pop()
         } else {
-            let item = getItem(itemState, focus)
+            let item = getItem(props.lists[props.listInd], focus)
             while (item.children.length > 0) {
                 const ind = item.children.length - 1
                 focus.push(ind)
@@ -147,14 +143,14 @@ const List: FC<ListProps> = props => {
             return
         }
         let focus = [...focusInd]
-        const item = getItem(itemState, focus)
+        const item = getItem(props.lists[props.listInd], focus)
         if (item.children.length > 0) {
             focus.push(0)
             setFocusInd(focus)
             return
         }
         focus[focus.length - 1] += 1
-        let arr = getArr(itemState, focus)
+        let arr = getArr(props.lists[props.listInd], focus)
         while (focus[focus.length - 1] >= arr.length) {
             focus.pop()
             if (focus.length === 0) {
@@ -162,18 +158,18 @@ const List: FC<ListProps> = props => {
                 break
             }
             focus[focus.length - 1] += 1
-            arr = getArr(itemState, focus)
+            arr = getArr(props.lists[props.listInd], focus)
         }
         setFocusInd(focus)
     }
 
     const decrementIndent = () => {
-        const state = [...itemState]
+        const state = [...props.lists]
         const focus = [...focusInd]
         if (focus.length <= 1) {
             return
         }
-        const parentArr = getArr(state, focus.slice(0, -1))
+        const parentArr = getArr(state[props.listInd], focus.slice(0, -1))
         const thisArr = parentArr[focus[focus.length - 2]].children
         const item = thisArr.splice(focus[focus.length - 1], 1)[0]
         focus.pop()
@@ -185,9 +181,9 @@ const List: FC<ListProps> = props => {
     }
 
     const incrementIndent = () => {
-        const state = [...itemState]
+        const state = [...props.lists]
         const focus = [...focusInd]
-        const arr = getArr(state, focus)
+        const arr = getArr(state[props.listInd], focus)
         if (arr.length <= 1 || focus[focus.length - 1] === 0) {
             return
         }
@@ -266,7 +262,7 @@ const List: FC<ListProps> = props => {
                     onMouseDown={() => setFocusInd([])}
                 />
                 <div>{
-                    itemState.map((item: ItemData, i: number) => {
+                    props.lists[props.listInd].items.map((item: ItemData, i: number) => {
                         return itemToComponents(item, [i])
                     })
                 }</div>
