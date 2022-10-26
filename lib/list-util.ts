@@ -49,10 +49,28 @@ const getTotalChildren = (item: ItemData) => {
     return count
 }
 
+const getFocusArr = (item: ItemData, itemInd: Array<number>) => {
+    const inds: Array<Array<number>> = []
+    inds.push(itemInd)
+    item.children.forEach((child, i) => {
+        inds.push(...getFocusArr(child, [...itemInd, i]))
+    })
+    return inds
+}
+
+const getFocusArrs = (items: Array<ItemData>) => {
+    const inds: Array<Array<number>> = []
+    items.forEach((item, i) => {
+        inds.push(...getFocusArr(item, [i]))
+    })
+    return inds
+}
+
 export {
     getBlankItem,
     getBlankList,
     getItem,
     getSiblings,
-    getTotalChildren
+    getTotalChildren,
+    getFocusArrs
 }

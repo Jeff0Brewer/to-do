@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
 import Item from './item'
 import { arrayIndexOf } from '../lib/array'
-import { getBlankItem, getItem, getSiblings, getTotalChildren } from '../lib/list-util'
+import { getBlankItem, getItem, getSiblings, getTotalChildren, getFocusArrs } from '../lib/list-util'
 import styles from '../styles/List.module.css'
 
 type ListProps = {
@@ -17,21 +17,8 @@ const List: FC<ListProps> = props => {
     const focusCheckRef = useRef<boolean>(true)
     const titleRef = useRef<HTMLInputElement>(null)
 
-    const getFocusArrs = (item: ItemData, itemInd: Array<number>) => {
-        const inds = []
-        inds.push(itemInd)
-        item.children.forEach((child, i) => {
-            inds.push(...getFocusArrs(child, [...itemInd, i]))
-        })
-        return inds
-    }
-
     useEffect(() => {
-        const inds: Array<Array<number>> = []
-        props.lists[props.listInd].items.forEach((item, i) => {
-            inds.push(...getFocusArrs(item, [i]))
-        })
-        setFocusArrs(inds)
+        setFocusArrs(getFocusArrs(props.lists[props.listInd].items))
         focusCheckRef.current = true
         if (titleRef.current) {
             titleRef.current.value = props.lists[props.listInd].title
