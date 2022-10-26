@@ -4,6 +4,7 @@ import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
 import LabelButton from './label-button'
 import { ListData } from '../lib/types'
+import { getBlankList } from '../lib/list-util'
 import styles from '../styles/ListInterface.module.css'
 
 type ListInterfaceProps = {
@@ -13,25 +14,12 @@ type ListInterfaceProps = {
     setListInd: (ind: number) => void
 }
 
-const getEmptyList = () => {
-    return {
-        title: '',
-        date: new Date(),
-        items: [
-            {
-                text: '',
-                completed: false
-            }
-        ]
-    }
-}
-
 const ListInterface: FC<ListInterfaceProps> = props => {
     const [searching, setSearching] = useState<boolean>(false)
 
     const newList = () => {
         const newLists = [...props.lists]
-        const emptyList = getEmptyList()
+        const emptyList = getBlankList()
         newLists.push(emptyList)
         const ind = newLists.length - 1
         props.setListInd(ind)
@@ -42,7 +30,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         const newLists = [...props.lists]
         newLists.splice(ind, 1)
         if (newLists.length === 0) {
-            newLists.push(getEmptyList())
+            newLists.push(getBlankList())
         }
         props.setListInd(0)
         props.setLists(newLists)
