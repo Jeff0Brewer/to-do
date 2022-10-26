@@ -19,8 +19,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
 
     const newList = () => {
         const newLists = [...props.lists]
-        const emptyList = getBlankList()
-        newLists.push(emptyList)
+        newLists.push(getBlankList())
         const ind = newLists.length - 1
         props.setListInd(ind)
         props.setLists(newLists)
