@@ -14,12 +14,10 @@ type ListProps = {
 const List: FC<ListProps> = props => {
     const [focusArrs, setFocusArrs] = useState<Array<Array<number>>>([[0]])
     const [focusInd, setFocusInd] = useState<number>(-1)
-    const focusCheckRef = useRef<boolean>(true)
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         setFocusArrs(getFocusArrs(props.lists[props.listInd].items))
-        focusCheckRef.current = true
         if (titleRef.current) {
             titleRef.current.value = props.lists[props.listInd].title
         }
@@ -94,7 +92,7 @@ const List: FC<ListProps> = props => {
         parentSiblings.splice(parentFocus[parentFocus.length - 1] + 1, 0, item)
         props.setLists(state)
         setFocusInd(parentInd + getTotalChildren(parent) + 1)
-        focusCheckRef.current = false
+        setFocusArrs(getFocusArrs(state[props.listInd].items))
     }
 
     const incrementIndent = () => {
@@ -114,7 +112,7 @@ const List: FC<ListProps> = props => {
         siblingAbove.children.push(item)
         props.setLists(state)
         setFocusInd(siblingAboveInd + getTotalChildren(siblingAbove) - getTotalChildren(item))
-        focusCheckRef.current = false
+        setFocusArrs(getFocusArrs(state[props.listInd].items))
     }
 
     const keyHandler = (e: KeyboardEvent) => {
@@ -146,7 +144,7 @@ const List: FC<ListProps> = props => {
         const component = <Item
             text={item.text}
             completed={item.completed}
-            focus={focusCheckRef.current && thisFocusInd === focusInd}
+            focus={thisFocusInd === focusInd}
             key={item.key}
             setText={(val: string) => setItemText(val, focusArr)}
             setCompleted={(val: boolean) => setItemCompleted(val, focusArr)}
