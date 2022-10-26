@@ -96,7 +96,7 @@ const List: FC<ListProps> = props => {
     }
 
     const incrementIndent = () => {
-        if (focusInd <= 0) { return }
+        if (focusInd <= 0 || focusArrs[focusInd].length > 10) { return }
         const state = [...props.lists]
         const itemFocus = focusArrs[focusInd]
         let siblingAboveInd = focusInd - 1
