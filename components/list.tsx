@@ -6,12 +6,13 @@ import { arrayEqual } from '../lib/array'
 import styles from '../styles/List.module.css'
 
 const getBlankItem = () => {
-    return {
+    const item: ItemData = {
         text: '',
         completed: false,
         key: getKey(),
         children: []
     }
+    return item
 }
 
 const getItem = (state: ListData, inds: Array<number>) => {
@@ -22,7 +23,7 @@ const getItem = (state: ListData, inds: Array<number>) => {
     return item
 }
 
-const getArr = (state: ListData, inds: Array<number>) => {
+const getSiblings = (state: ListData, inds: Array<number>) => {
     if (inds.length === 1) {
         return state.items
     }
@@ -85,7 +86,7 @@ const List: FC<ListProps> = props => {
 
     const addItem = (inds: Array<number>) => {
         const state = [...props.lists]
-        const arr = getArr(state[props.listInd], inds)
+        const arr = getSiblings(state[props.listInd], inds)
         arr.splice(inds[inds.length - 1] + 1, 0, getBlankItem())
 
         const focus = [...focusInd]
@@ -97,7 +98,7 @@ const List: FC<ListProps> = props => {
 
     const removeItem = (inds: Array<number>) => {
         const state = [...props.lists]
-        const arr = getArr(state[props.listInd], inds)
+        const arr = getSiblings(state[props.listInd], inds)
         arr.splice(inds[inds.length - 1], 1)
         if (arr.length === 0) {
             arr.push(getBlankItem())
@@ -147,7 +148,7 @@ const List: FC<ListProps> = props => {
             return
         }
         focus[focus.length - 1] += 1
-        let arr = getArr(props.lists[props.listInd], focus)
+        let arr = getSiblings(props.lists[props.listInd], focus)
         while (focus[focus.length - 1] >= arr.length) {
             focus.pop()
             if (focus.length === 0) {
@@ -155,7 +156,7 @@ const List: FC<ListProps> = props => {
                 break
             }
             focus[focus.length - 1] += 1
-            arr = getArr(props.lists[props.listInd], focus)
+            arr = getSiblings(props.lists[props.listInd], focus)
         }
         setFocusInd(focus)
     }
@@ -166,7 +167,7 @@ const List: FC<ListProps> = props => {
         if (focus.length <= 1) {
             return
         }
-        const parentArr = getArr(state[props.listInd], focus.slice(0, -1))
+        const parentArr = getSiblings(state[props.listInd], focus.slice(0, -1))
         const thisArr = parentArr[focus[focus.length - 2]].children
         const item = thisArr.splice(focus[focus.length - 1], 1)[0]
         focus.pop()
@@ -180,7 +181,7 @@ const List: FC<ListProps> = props => {
     const incrementIndent = () => {
         const state = [...props.lists]
         const focus = [...focusInd]
-        const arr = getArr(state[props.listInd], focus)
+        const arr = getSiblings(state[props.listInd], focus)
         if (arr.length <= 1 || focus[focus.length - 1] === 0) {
             return
         }
