@@ -86,13 +86,14 @@ const List: FC<ListProps> = props => {
         while (focusArrs[parentInd].length >= itemFocus.length) {
             parentInd -= 1
         }
+        const parentFocus = focusArrs[parentInd]
         const siblings = getSiblings(state[props.listInd], itemFocus)
         const item = siblings.splice(itemFocus[itemFocus.length - 1], 1)[0]
-        const parentFocus = focusArrs[parentInd]
-        const parentSiblings = getSiblings(state[props.listInd], focusArrs[parentInd])
+        const parentSiblings = getSiblings(state[props.listInd], parentFocus)
+        const parent = getItem(state[props.listInd], parentFocus)
         parentSiblings.splice(parentFocus[parentFocus.length - 1] + 1, 0, item)
         props.setLists(state)
-        setFocusInd(parentInd + getTotalChildren(getItem(state[props.listInd], parentFocus)) + 1)
+        setFocusInd(parentInd + getTotalChildren(parent) + 1)
         focusCheckRef.current = false
     }
 
