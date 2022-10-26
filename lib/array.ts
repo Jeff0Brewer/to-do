@@ -9,6 +9,16 @@ const arrayEqual = (a: Array<any>, b: Array<any>) => {
     return true
 }
 
+const arrayIndexOf = (a: Array<Array<any>>, b: Array<any>) => {
+    for (let i = 0; i < a.length; i++) {
+        if (arrayEqual(a[i], b)) {
+            return i
+        }
+    }
+    return -1
+}
+
 export {
-    arrayEqual
+    arrayEqual,
+    arrayIndexOf
 }
