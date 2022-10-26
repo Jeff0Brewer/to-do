@@ -70,7 +70,7 @@ const List: FC<ListProps> = props => {
         const state = [...props.lists]
         const arr = getSiblings(state[props.listInd], inds)
         arr.splice(inds[inds.length - 1], 1)
-        if (arr.length === 0) {
+        if (inds.length === 1 && arr.length === 0) {
             arr.push(getBlankItem())
         }
         props.setLists(state)
