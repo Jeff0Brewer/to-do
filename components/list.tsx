@@ -58,6 +58,7 @@ const List: FC<ListProps> = props => {
     }
 
     const addItem = (inds: Array<number>) => {
+        if (focusArrs.length >= 100) { return }
         const state = [...props.lists]
         const arr = getSiblings(state[props.listInd], inds)
         arr.splice(inds[inds.length - 1] + 1, 0, getBlankItem())
@@ -129,6 +130,9 @@ const List: FC<ListProps> = props => {
             }
             case 'Tab': {
                 e.preventDefault()
+                if (!focusArrs[focusInd]) {
+                    break
+                }
                 if (e.shiftKey) {
                     decrementIndent()
                 } else {
