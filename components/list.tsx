@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
 import Item from './item'
-import { arrayIndexOf } from '../lib/array'
+import { arrayIndexOf, arrayEqual } from '../lib/array'
 import { getBlankItem, getItem, getSiblings, getTotalChildren, getFocusArrs } from '../lib/list-util'
 import styles from '../styles/List.module.css'
 
@@ -97,9 +97,12 @@ const List: FC<ListProps> = props => {
     }
 
     const incrementIndent = () => {
-        if (focusInd <= 0 || focusArrs[focusInd].length > 10) { return }
-        const state = [...props.lists]
         const itemFocus = focusArrs[focusInd]
+        const maxChildIndent = focusArrs
+            .filter(arr => arrayEqual(itemFocus, arr.slice(0, itemFocus.length)))
+            .reduce((p, c) => p > c.length ? p : c.length, 0)
+        if (focusInd <= 0 || maxChildIndent > 10) { return }
+        const state = [...props.lists]
         let siblingAboveInd = focusInd - 1
         while (focusArrs[siblingAboveInd].length !== itemFocus.length) {
             if (focusArrs[siblingAboveInd].length < itemFocus.length || siblingAboveInd === 0) {
