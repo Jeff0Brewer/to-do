@@ -42,7 +42,7 @@ const Item: FC<ItemProps> = props => {
     }, [props.focus])
 
     return (
-        <div className={styles.itemContainer} onMouseDown={props.setFocus}>
+        <div className={styles.itemContainer}>
             <input
                 className={styles.itemCheck}
                 type="checkbox"
@@ -57,6 +57,7 @@ const Item: FC<ItemProps> = props => {
                 defaultValue={props.text}
                 onChange={changeText}
                 onKeyDown={keyHandler}
+                onMouseDown={props.setFocus}
             />
         </div>
     )
