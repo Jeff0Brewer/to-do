@@ -40,12 +40,10 @@ type ListProps = {
 }
 
 const List: FC<ListProps> = props => {
-    const [title, setTitle] = useState<string>(props.lists[props.listInd].title)
     const [focusInd, setFocusInd] = useState<Array<number>>([])
     const titleRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        setTitle(props.lists[props.listInd].title)
         if (titleRef.current) {
             titleRef.current.value = props.lists[props.listInd].title
         }
@@ -66,7 +64,6 @@ const List: FC<ListProps> = props => {
 
     const updateTitle = (title: string) => {
         setFocusInd([])
-        setTitle(title)
         const lists = [...props.lists]
         lists[props.listInd].title = title
         props.setLists(lists)
@@ -257,7 +254,7 @@ const List: FC<ListProps> = props => {
                     ref={titleRef}
                     type="text"
                     placeholder="title..."
-                    defaultValue={title}
+                    defaultValue={props.lists[props.listInd].title}
                     onChange={e => updateTitle(e.target.value)}
                     onMouseDown={() => setFocusInd([])}
                 />
