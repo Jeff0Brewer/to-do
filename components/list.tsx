@@ -76,10 +76,11 @@ const List: FC<ListProps> = props => {
     const addItem = (inds: Array<number>) => {
         if (focusArrs.length >= 100) { return }
         const state = [...props.lists]
-        const arr = getSiblings(state[props.listInd], inds)
-        arr.splice(inds[inds.length - 1] + 1, 0, getBlankItem())
+        const item = getItem(state[props.listInd], inds)
+        const siblings = getSiblings(state[props.listInd], inds)
+        siblings.splice(inds[inds.length - 1] + 1, 0, getBlankItem())
         props.setLists(state)
-        setFocusInd(focusInd + 1)
+        setFocusInd(focusInd + getTotalChildren(item) + 1)
     }
 
     const removeItem = (inds: Array<number>) => {
