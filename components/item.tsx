@@ -50,6 +50,7 @@ const Item: FC<ItemProps> = props => {
                 onChange={e => props.setText(e.target.value)}
                 onKeyDown={keyHandler}
                 onMouseDown={props.setFocus}
+                onTouchStart={props.setFocus}
             />
         </div>
     )

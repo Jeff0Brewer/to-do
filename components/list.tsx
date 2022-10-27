@@ -5,6 +5,17 @@ import { arrayIndexOf, arrayEqual } from '../lib/array'
 import { getBlankItem, getItem, getSiblings, getTotalChildren, getFocusArrs } from '../lib/list-util'
 import styles from '../styles/List.module.css'
 
+type TouchPos = {
+    start: {
+        x: number,
+        y: number
+    },
+    end: {
+        x: number,
+        y: number
+    }
+}
+
 type ListProps = {
     lists: Array<ListData>,
     setLists: (lists: Array<ListData>) => void,
@@ -15,6 +26,7 @@ const List: FC<ListProps> = props => {
     const [focusArrs, setFocusArrs] = useState<Array<Array<number>>>([[0]])
     const [focusInd, setFocusInd] = useState<number>(-1)
     const titleRef = useRef<HTMLInputElement>(null)
+    const touchRef = useRef<TouchPos>({ start: { x: 0, y: 0 }, end: { x: 0, y: 0 } })
 
     useEffect(() => {
         setFocusArrs(getFocusArrs(props.lists[props.listInd].items))
@@ -28,8 +40,12 @@ const List: FC<ListProps> = props => {
             titleRef.current.focus()
         }
         window.addEventListener('keydown', keyHandler)
+        window.addEventListener('touchstart', touchStartHandler)
+        window.addEventListener('touchend', touchEndHandler)
         return () => {
             window.removeEventListener('keydown', keyHandler)
+            window.removeEventListener('touchstart', touchStartHandler)
+            window.removeEventListener('touchend', touchEndHandler)
         }
     }, [focusArrs, focusInd])
 
@@ -143,6 +159,35 @@ const List: FC<ListProps> = props => {
                 }
                 break
             }
+        }
+    }
+
+    const touchMoveHandler = (e: TouchEvent) => {
+        if (e.touches.length > 1) { return }
+        touchRef.current.end.x = e.touches[0].clientX
+        touchRef.current.end.y = e.touches[0].clientY
+    }
+
+    const touchStartHandler = (e: TouchEvent) => {
+        window.addEventListener('touchmove', touchMoveHandler)
+        if (e.touches.length > 1) { return }
+        touchRef.current.start.x = e.touches[0].clientX
+        touchRef.current.start.y = e.touches[0].clientY
+        touchRef.current.end.x = e.touches[0].clientX
+        touchRef.current.end.y = e.touches[0].clientY
+    }
+
+    const touchEndHandler = (e: TouchEvent) => {
+        window.removeEventListener('touchmove', touchMoveHandler)
+        if (e.touches.length > 1) { return }
+        const dx = touchRef.current.end.x - touchRef.current.start.x
+        const dy = touchRef.current.end.y - touchRef.current.start.y
+        if (Math.abs(dy) > Math.abs(dx)) { return }
+        const swipeDist = 20
+        if (dx > swipeDist) {
+            incrementIndent()
+        } else if (Math.abs(dx) > swipeDist) {
+            decrementIndent()
         }
     }
 
