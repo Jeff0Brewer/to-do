@@ -13,5 +13,6 @@ model List {
   id    Int      @id @default(autoincrement())
   title String
   date  DateTime
-  items String
+  key   String
+  items Bytes
 }
