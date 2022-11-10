@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import { IoMdTrash, IoMdSearch } from 'react-icons/io'
 import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
@@ -22,6 +22,18 @@ type ListInterfaceProps = {
 const ListInterface: FC<ListInterfaceProps> = props => {
     const [lists, setLists] = useState<Array<ListData>>([getBlankList()])
     const [searching, setSearching] = useState<boolean>(false)
+    const updateIdRef = useRef<number>(0)
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        updateIdRef.current = window.setTimeout(() => updateList(props.list), 500)
+        return () => {
+            window.clearTimeout(updateIdRef.current)
+        }
+    }, [props.list])
 
     const fetchData = async () => {
         const res = await fetch('/api/get-lists')
@@ -40,9 +52,9 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         }
     }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
+    const updateList = (list: ListData) => {
+
+    }
 
     const newList = () => {
         const newLists = [...lists]

@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
-import Item from './item'
 import { arrayIndexOf, arrayEqual } from '../lib/array'
 import { getBlankItem, getItem, getSiblings, getTotalChildren, getFocusArrs } from '../lib/list-util'
 import { swipeStartHandler, swipeEndHandler } from '../lib/touch'
+import Item from './item'
 import styles from '../styles/List.module.css'
 
 type ListProps = {
