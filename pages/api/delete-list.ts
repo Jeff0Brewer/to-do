@@ -16,6 +16,7 @@ const deleteList = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         res.status(200).send({ message: 'list deleted' })
     } catch (e) {
+        console.log(e)
         res.status(404).send({ message: 'list not found' })
     }
 }
