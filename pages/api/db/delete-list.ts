@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../prisma/prisma-client'
+import prisma from '../../../prisma/prisma-client'
 
 const deleteList = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'POST' || typeof req.body?.key !== 'string') {

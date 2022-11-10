@@ -28,7 +28,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     const updateIdRef = useRef<number>(0)
 
     useEffect(() => {
-        fetch('/api/get-lists')
+        fetch('/api/db/get-lists')
             .then(data => data.json())
             .then((res: Array<ListRes>) => {
                 const lists: Array<ListData> = res.map(list => listResToData(list))
@@ -55,7 +55,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
             newLists.push(list)
         }
         setLists(newLists)
-        fetch('/api/update-list', postBody({ list }))
+        fetch('/api/db/update-list', postBody({ list }))
     }
 
     const newList = () => {
@@ -64,7 +64,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         newLists.push(list)
         props.setList(list)
         setLists(newLists)
-        fetch('/api/create-list', postBody({ list }))
+        fetch('/api/db/create-list', postBody({ list }))
     }
 
     const deleteList = (key: string) => {
@@ -76,7 +76,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         }
         setLists(newLists)
         props.setList(newLists[Math.max(0, ind - 1)])
-        fetch('/api/delete-list', postBody({ key }))
+        fetch('/api/db/delete-list', postBody({ key }))
     }
 
     const toggleSearch = () => {
