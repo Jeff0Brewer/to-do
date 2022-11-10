@@ -1,16 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PrismaClient } from '@prisma/client'
 import type { ListData, ListBlob } from '../../lib/types'
-
-const listBlobToData = (blob: ListBlob) => {
-    const data: ListData = {
-        title: blob.title,
-        key: blob.key,
-        date: blob.date,
-        items: JSON.parse(blob.items.toString('utf8'))
-    }
-    return data
-}
+import { listBlobToData } from '../../lib/list-util'
 
 const prisma = new PrismaClient()
 

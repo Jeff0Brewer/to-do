@@ -19,8 +19,16 @@ type ListBlob = {
     key: string
 }
 
+type ListRes = {
+    title: string,
+    date: string,
+    key: string,
+    items: Array<ItemData>
+}
+
 export type {
     ItemData,
     ListData,
-    ListBlob
+    ListBlob,
+    ListRes
 }

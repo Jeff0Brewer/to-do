@@ -3,16 +3,9 @@ import { IoMdTrash, IoMdSearch } from 'react-icons/io'
 import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
 import LabelButton from './label-button'
-import { ListData, ItemData } from '../lib/types'
+import { ListData, ListRes } from '../lib/types'
 import { getBlankList } from '../lib/list-util'
 import styles from '../styles/ListInterface.module.css'
-
-type ListRes = {
-    title: string,
-    date: string,
-    key: string,
-    items: Array<ItemData>
-}
 
 type ListInterfaceProps = {
     list: ListData,
@@ -62,6 +55,13 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         newLists.push(blank)
         props.setList(blank)
         setLists(newLists)
+        fetch('/api/create-list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ list: blank })
+        })
     }
 
     const deleteList = (key: string) => {
