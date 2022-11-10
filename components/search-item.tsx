@@ -6,8 +6,8 @@ import styles from '../styles/SearchInterface.module.css'
 
 type SearchItemProps = {
     list: ListData,
-    deleteList: () => void,
-    selectList: () => void
+    deleteList: (key: string) => void,
+    selectList: (list: ListData) => void
 }
 
 const SearchItem: FC<SearchItemProps> = props => {
@@ -16,11 +16,11 @@ const SearchItem: FC<SearchItemProps> = props => {
 
     const deleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
-        props.deleteList()
+        props.deleteList(props.list.key)
     }
 
     return (
-        <a className={styles.searchItem} onClick={props.selectList}>
+        <a className={styles.searchItem} onClick={() => props.selectList(props.list)}>
             <p className={styles.searchTitle}>{title}</p>
             <div className={styles.itemEnd}>
                 <p className={styles.searchDate}>{dateStr}</p>

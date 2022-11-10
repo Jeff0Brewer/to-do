@@ -7,16 +7,15 @@ import { getBlankList } from '../lib/list-util'
 import { ListData } from '../lib/types'
 
 const Home: NextPage = () => {
-    const [lists, setLists] = useState<Array<ListData>>([getBlankList()])
-    const [listInd, setListInd] = useState<number>(0)
+    const [list, setList] = useState<ListData>(getBlankList())
     return (
         <>
             <Head>
                 <title>to do</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <ListInterface lists={lists} setLists={setLists} listInd={listInd} setListInd={setListInd} />
-            <List lists={lists} setLists={setLists} listInd={listInd} />
+            <ListInterface list={list} setList={setList} />
+            <List list={list} setList={setList} />
         </>
 
     )

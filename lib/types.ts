@@ -12,7 +12,15 @@ type ListData = {
     key: string
 }
 
+type ListBlob = {
+    title: string,
+    date: Date,
+    items: Buffer,
+    key: string
+}
+
 export type {
     ItemData,
-    ListData
+    ListData,
+    ListBlob
 }
