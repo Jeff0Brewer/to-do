@@ -6,6 +6,7 @@
     "extends": [
         "plugin:@next/next/recommended",
         "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
         "standard"
     ],
     "overrides": [
@@ -29,7 +30,8 @@
     ],
     "rules": {
         "react/prop-types": "off",
-        "indent": ["error", 4, { "SwitchCase": 1 }]
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "no-var": 0
     },
     "settings": {
         "react": {
