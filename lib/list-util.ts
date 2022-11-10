@@ -12,7 +12,7 @@ const getBlankItem = () => {
 }
 
 const getBlankList = () => {
-    return {
+    const list: ListData = {
         title: '',
         date: new Date(),
         items: [
@@ -20,6 +20,7 @@ const getBlankList = () => {
         ],
         key: getKey()
     }
+    return list
 }
 
 const getItem = (state: ListData, inds: Array<number>) => {
