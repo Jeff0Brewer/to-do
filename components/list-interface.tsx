@@ -22,7 +22,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     }, [])
 
     useEffect(() => {
-        updateIdRef.current = window.setTimeout(() => updateList(props.list), 500)
+        updateIdRef.current = window.setTimeout(() => updateList(props.list), 1000)
         return () => {
             window.clearTimeout(updateIdRef.current)
         }
@@ -46,7 +46,17 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     }
 
     const updateList = (list: ListData) => {
-
+        const newLists = [...lists]
+        const ind = lists.map(list => list.key).indexOf(list.key)
+        newLists[ind] = list
+        setLists(newLists)
+        fetch('/api/update-list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ list })
+        })
     }
 
     const newList = () => {

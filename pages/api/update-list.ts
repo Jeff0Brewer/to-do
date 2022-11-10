@@ -1,25 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { PrismaClient } from '@prisma/client'
 import { listResToBlob } from '../../lib/list-util'
-import { isListRes } from '../../lib/types'
+import { ListBlob, isListRes } from '../../lib/types'
 
 const prisma = new PrismaClient()
 
-const createList = async (req: NextApiRequest, res: NextApiResponse) => {
+const updateList = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'POST' || !isListRes(req.body?.list)) {
         res.status(405).send({ message: 'must send list in POST request' })
         return
     }
-    const blob = listResToBlob(req.body.list)
+    const blob: ListBlob = listResToBlob(req.body.list)
     try {
-        await prisma.list.create({
+        await prisma.list.update({
+            where: {
+                key: blob.key
+            },
             data: blob
         })
-        res.status(200).send({ message: 'list created' })
+        res.status(200).send({ message: 'list updated' })
     } catch (e) {
         console.log(e)
-        res.status(500).send({ message: 'list creation failed' })
+        res.status(500).send({ message: 'list update failed' })
     }
 }
 
-export default createList
+export default updateList
