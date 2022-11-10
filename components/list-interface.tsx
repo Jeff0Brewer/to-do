@@ -13,7 +13,7 @@ type ListInterfaceProps = {
 }
 
 const ListInterface: FC<ListInterfaceProps> = props => {
-    const [lists, setLists] = useState<Array<ListData>>([getBlankList()])
+    const [lists, setLists] = useState<Array<ListData>>([])
     const [searching, setSearching] = useState<boolean>(false)
     const updateIdRef = useRef<number>(0)
 
@@ -48,7 +48,11 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     const updateList = (list: ListData) => {
         const newLists = [...lists]
         const ind = lists.map(list => list.key).indexOf(list.key)
-        newLists[ind] = list
+        if (ind !== -1) {
+            newLists[ind] = list
+        } else {
+            newLists.push(list)
+        }
         setLists(newLists)
         fetch('/api/update-list', {
             method: 'POST',
