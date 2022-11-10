@@ -1,4 +1,4 @@
-import { ListData, ItemData } from './types'
+import { ListData, ListBlob, ListRes, ItemData } from './types'
 import { getKey } from './key'
 
 const getBlankItem = () => {
@@ -12,7 +12,7 @@ const getBlankItem = () => {
 }
 
 const getBlankList = () => {
-    return {
+    const list: ListData = {
         title: '',
         date: new Date(),
         items: [
@@ -20,6 +20,7 @@ const getBlankList = () => {
         ],
         key: getKey()
     }
+    return list
 }
 
 const getItem = (state: ListData, inds: Array<number>) => {
@@ -66,11 +67,44 @@ const getFocusArrs = (items: Array<ItemData>) => {
     return inds
 }
 
+const listBlobToData = (blob: ListBlob) => {
+    const data: ListData = {
+        key: blob.key,
+        title: blob.title,
+        date: blob.date,
+        items: JSON.parse(blob.items.toString('utf8'))
+    }
+    return data
+}
+
+const listResToBlob = (res: ListRes) => {
+    const blob: ListBlob = {
+        key: res.key,
+        title: res.title,
+        date: new Date(Date.parse(res.date)),
+        items: Buffer.from(JSON.stringify(res.items), 'utf8')
+    }
+    return blob
+}
+
+const listResToData = (res: ListRes) => {
+    const data: ListData = {
+        key: res.key,
+        title: res.title,
+        items: res.items,
+        date: new Date(Date.parse(res.date))
+    }
+    return data
+}
+
 export {
     getBlankItem,
     getBlankList,
     getItem,
     getSiblings,
     getTotalChildren,
-    getFocusArrs
+    getFocusArrs,
+    listBlobToData,
+    listResToBlob,
+    listResToData
 }

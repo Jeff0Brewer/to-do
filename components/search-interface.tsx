@@ -6,9 +6,9 @@ import styles from '../styles/SearchInterface.module.css'
 
 type SearchInterfaceProps = {
     lists: Array<ListData>,
-    setListInd: (ind: number) => void,
+    setList: (list: ListData) => void,
     toggleSearch: () => void,
-    deleteList: (ind: number) => void
+    deleteList: (key: string) => void
 }
 
 const SearchInterface: FC<SearchInterfaceProps> = props => {
@@ -18,8 +18,8 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
         setSearchVal(e.target.value.toLowerCase())
     }
 
-    const selectList = (ind: number) => {
-        props.setListInd(ind)
+    const selectList = (list: ListData) => {
+        props.setList(list)
         props.toggleSearch()
     }
 
@@ -32,9 +32,11 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
                 </span>
                 <div className={styles.searchItems}>{
                     props.lists
-                        .filter((list: ListData) => list.title.toLowerCase().includes(searchVal))
+                        .filter((list: ListData) =>
+                            list.title.toLowerCase().includes(searchVal)
+                        )
                         .map((list: ListData, i: number) => {
-                            return <SearchItem key={list.key} list={list} deleteList={() => props.deleteList(i)} selectList={() => selectList(i)} />
+                            return <SearchItem key={list.key} list={list} deleteList={props.deleteList} selectList={selectList} />
                         })
                 }</div>
             </section>
