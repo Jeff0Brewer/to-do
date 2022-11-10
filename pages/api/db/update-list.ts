@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'
 import { listResToBlob } from '../../../lib/list-util'
 import { ListBlob, isListRes } from '../../../lib/types'
-import prisma from '../../../prisma/prisma-client'
+import prisma from '../../../prisma/client'
 
 const updateList = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'POST' || !isListRes(req.body?.list)) {
