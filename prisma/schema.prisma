@@ -10,9 +10,8 @@ datasource db {
 }
 
 model List {
-  id    Int      @id @default(autoincrement())
+  key   String   @id
   title String
   date  DateTime
-  key   String
   items Bytes
 }
