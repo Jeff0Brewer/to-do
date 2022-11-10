@@ -73,6 +73,13 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         }
         setLists(newLists)
         props.setList(newLists[Math.max(0, ind - 1)])
+        fetch('/api/delete-list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ key })
+        })
     }
 
     const toggleSearch = () => {
