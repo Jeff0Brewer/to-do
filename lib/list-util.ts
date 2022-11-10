@@ -86,6 +86,16 @@ const listResToBlob = (res: ListRes) => {
     return blob
 }
 
+const listResToData = (res: ListRes) => {
+    const data: ListData = {
+        key: res.key,
+        title: res.title,
+        items: res.items,
+        date: new Date(Date.parse(res.date))
+    }
+    return data
+}
+
 export {
     getBlankItem,
     getBlankList,
@@ -94,5 +104,6 @@ export {
     getTotalChildren,
     getFocusArrs,
     listBlobToData,
-    listResToBlob
+    listResToBlob,
+    listResToData
 }

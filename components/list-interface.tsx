@@ -4,7 +4,7 @@ import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
 import LabelButton from './label-button'
 import { ListData, ListRes } from '../lib/types'
-import { getBlankList } from '../lib/list-util'
+import { getBlankList, listResToData } from '../lib/list-util'
 import styles from '../styles/ListInterface.module.css'
 
 const postBody = (data: object) => {
@@ -28,7 +28,15 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     const updateIdRef = useRef<number>(0)
 
     useEffect(() => {
-        fetchData()
+        fetch('/api/get-lists')
+            .then(data => data.json())
+            .then((res: Array<ListRes>) => {
+                const lists: Array<ListData> = res.map(list => listResToData(list))
+                setLists(lists)
+                if (lists.length) {
+                    props.setList(lists[0])
+                }
+            })
     }, [])
 
     useEffect(() => {
@@ -37,23 +45,6 @@ const ListInterface: FC<ListInterfaceProps> = props => {
             window.clearTimeout(updateIdRef.current)
         }
     }, [props.list])
-
-    const fetchData = async () => {
-        const res = await fetch('/api/get-lists')
-        const data: Array<ListRes> = await res.json()
-        const lists: Array<ListData> = data.map(list => {
-            return {
-                title: list.title,
-                key: list.key,
-                items: list.items,
-                date: new Date(Date.parse(list.date))
-            }
-        })
-        setLists(lists)
-        if (lists.length) {
-            props.setList(lists[0])
-        }
-    }
 
     const updateList = (list: ListData) => {
         const newLists = [...lists]
