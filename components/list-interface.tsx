@@ -7,6 +7,16 @@ import { ListData, ListRes } from '../lib/types'
 import { getBlankList } from '../lib/list-util'
 import styles from '../styles/ListInterface.module.css'
 
+const postBody = (data: object) => {
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+}
+
 type ListInterfaceProps = {
     list: ListData,
     setList: (list: ListData) => void
@@ -54,28 +64,16 @@ const ListInterface: FC<ListInterfaceProps> = props => {
             newLists.push(list)
         }
         setLists(newLists)
-        fetch('/api/update-list', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ list })
-        })
+        fetch('/api/update-list', postBody({ list }))
     }
 
     const newList = () => {
         const newLists = [...lists]
-        const blank = getBlankList()
-        newLists.push(blank)
-        props.setList(blank)
+        const list = getBlankList()
+        newLists.push(list)
+        props.setList(list)
         setLists(newLists)
-        fetch('/api/create-list', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ list: blank })
-        })
+        fetch('/api/create-list', postBody({ list }))
     }
 
     const deleteList = (key: string) => {
@@ -87,13 +85,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         }
         setLists(newLists)
         props.setList(newLists[Math.max(0, ind - 1)])
-        fetch('/api/delete-list', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ key })
-        })
+        fetch('/api/delete-list', postBody({ key }))
     }
 
     const toggleSearch = () => {
