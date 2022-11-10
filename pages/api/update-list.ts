@@ -12,12 +12,7 @@ const updateList = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const blob: ListBlob = listResToBlob(req.body.list)
     try {
-        await prisma.list.update({
-            where: {
-                key: blob.key
-            },
-            data: blob
-        })
+        await prisma.list.update({ where: { key: blob.key }, data: blob })
         res.status(200).send({ message: 'list updated' })
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {

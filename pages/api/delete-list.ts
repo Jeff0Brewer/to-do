@@ -9,11 +9,7 @@ const deleteList = async (req: NextApiRequest, res: NextApiResponse) => {
         return
     }
     try {
-        await prisma.list.delete({
-            where: {
-                key: req.body.key
-            }
-        })
+        await prisma.list.delete({ where: { key: req.body.key } })
         res.status(200).send({ message: 'list deleted' })
     } catch (e) {
         console.log(e)

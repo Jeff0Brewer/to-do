@@ -12,9 +12,7 @@ const createList = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const blob = listResToBlob(req.body.list)
     try {
-        await prisma.list.create({
-            data: blob
-        })
+        await prisma.list.create({ data: blob })
         res.status(200).send({ message: 'list created' })
     } catch (e) {
         console.log(e)
