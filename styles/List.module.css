@@ -91,7 +91,7 @@
     border-radius: 50%;
     background-color: transparent;
     border: 1px solid #fff;
-    animation: checkHighlight 200ms ease-out;
+    animation: checkHighlight 250ms ease-out;
     animation-fill-mode: forwards;
 }
 
