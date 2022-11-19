@@ -11,14 +11,15 @@ const getBlankItem = () => {
     return item
 }
 
-const getBlankList = () => {
+const getBlankList = (email: string) => {
     const list: ListData = {
         title: '',
         date: new Date(),
         items: [
             getBlankItem()
         ],
-        key: getKey()
+        key: getKey(),
+        userEmail: email
     }
     return list
 }
@@ -72,7 +73,8 @@ const listBlobToData = (blob: ListBlob) => {
         key: blob.key,
         title: blob.title,
         date: blob.date,
-        items: JSON.parse(blob.items.toString('utf8'))
+        items: JSON.parse(blob.items.toString('utf8')),
+        userEmail: blob.userEmail
     }
     return data
 }
@@ -82,7 +84,8 @@ const listResToBlob = (res: ListRes) => {
         key: res.key,
         title: res.title,
         date: new Date(Date.parse(res.date)),
-        items: Buffer.from(JSON.stringify(res.items), 'utf8')
+        items: Buffer.from(JSON.stringify(res.items), 'utf8'),
+        userEmail: res.userEmail
     }
     return blob
 }
@@ -92,7 +95,8 @@ const listResToData = (res: ListRes) => {
         key: res.key,
         title: res.title,
         items: res.items,
-        date: new Date(Date.parse(res.date))
+        date: new Date(Date.parse(res.date)),
+        userEmail: res.userEmail
     }
     return data
 }

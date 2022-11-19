@@ -9,21 +9,24 @@ type ListData = {
     title: string,
     date: Date,
     items: Array<ItemData>,
-    key: string
+    key: string,
+    userEmail: string
 }
 
 type ListBlob = {
     title: string,
     date: Date,
     items: Buffer,
-    key: string
+    key: string,
+    userEmail: string
 }
 
 type ListRes = {
     title: string,
     date: string,
     key: string,
-    items: Array<ItemData>
+    items: Array<ItemData>,
+    userEmail: string
 }
 
 const checkArray = (arr: any, check: (val: any) => boolean) => {
@@ -50,7 +53,8 @@ const isListRes = (obj: any) => {
         typeof obj?.key === 'string' &&
         typeof obj?.title === 'string' &&
         typeof obj?.date === 'string' &&
-        checkArray(obj?.items, isItemData)
+        checkArray(obj?.items, isItemData) &&
+        typeof obj?.userEmail === 'string'
     )
 }
 

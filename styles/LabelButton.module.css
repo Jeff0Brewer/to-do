@@ -12,6 +12,7 @@
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
     opacity: 0;
+    white-space: nowrap;
 }
 
 .symbol {
