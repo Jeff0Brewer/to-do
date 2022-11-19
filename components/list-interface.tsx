@@ -22,6 +22,7 @@ const postBody = (data: object) => {
 type ListInterfaceProps = {
     list: ListData,
     setList: (list: ListData) => void,
+    setLoaded: (loaded: boolean) => void,
     session: Session
 }
 
@@ -40,6 +41,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
                 if (lists.length) {
                     props.setList(lists[0])
                 }
+                props.setLoaded(true)
             })
     }, [])
 
