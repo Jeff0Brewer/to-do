@@ -31,7 +31,8 @@
     "rules": {
         "react/prop-types": "off",
         "indent": ["error", 4, { "SwitchCase": 1 }],
-        "no-var": 0
+        "no-var": 0,
+        "@typescript-eslint/no-explicit-any": 0
     },
     "settings": {
         "react": {
