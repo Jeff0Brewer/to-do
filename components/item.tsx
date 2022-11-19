@@ -37,7 +37,6 @@ const Item: FC<ItemProps> = props => {
         <div
             className={styles.itemContainer}
             onMouseDown={props.setFocus}
-            onTouchStart={props.setFocus}
         >
             <input
                 className={styles.itemCheck}
