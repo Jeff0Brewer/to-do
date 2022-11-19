@@ -13,10 +13,6 @@ type ListProps = {
 }
 
 const List: FC<ListProps> = props => {
-    if (!props.loaded) {
-        return <></>
-    }
-
     const [focusArrs, setFocusArrs] = useState<Array<Array<number>>>([[0]])
     const [focusInd, setFocusInd] = useState<number>(-1)
     const titleRef = useRef<HTMLInputElement>(null)
@@ -185,6 +181,10 @@ const List: FC<ListProps> = props => {
                 </div>
             </div>
         )
+    }
+
+    if (!props.loaded) {
+        return <></>
     }
 
     return (
