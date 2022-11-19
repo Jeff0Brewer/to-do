@@ -50,6 +50,7 @@
 }
 
 .itemCheck {
+    position: relative;
     appearance: none;
     background-color: transparent;
     width: 16px;
@@ -76,10 +77,46 @@
     height: 7px;
     background-color: #000;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    animation: checkFade 600ms ease-out;
+}
+
+.itemCheck:checked::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid #fff;
+    animation: checkHighlight 250ms ease-out;
+    animation-fill-mode: forwards;
 }
 
 .indent {
     margin: 0 0 0 20px;
+}
+
+@keyframes checkFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes checkHighlight {
+    from {
+        transform: scale(100%);
+        opacity: 1;
+    }
+    to {
+        transform: scale(250%);
+        opacity: 0;
+    }
 }
 
 @media (max-width: 900px) {

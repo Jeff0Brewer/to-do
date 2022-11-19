@@ -35,7 +35,7 @@ const SearchInterface: FC<SearchInterfaceProps> = props => {
                         .filter((list: ListData) =>
                             list.title.toLowerCase().includes(searchVal)
                         )
-                        .map((list: ListData, i: number) => {
+                        .map((list: ListData) => {
                             return <SearchItem key={list.key} list={list} deleteList={props.deleteList} selectList={selectList} />
                         })
                 }</div>

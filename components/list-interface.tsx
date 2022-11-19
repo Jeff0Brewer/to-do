@@ -54,9 +54,11 @@ const ListInterface: FC<ListInterfaceProps> = props => {
 
     const updateList = (list: ListData) => {
         const newLists = [...lists]
+        const newList = { ...list }
+        newList.date = new Date()
         const ind = lists.map(list => list.key).indexOf(list.key)
         if (ind !== -1) {
-            newLists[ind] = list
+            newLists[ind] = newList
         } else {
             newLists.push(list)
         }
