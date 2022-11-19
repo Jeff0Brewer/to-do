@@ -16,7 +16,7 @@
 }
 
 .symbol {
-    width: 40px;
+    min-width: 40px;
     font-size: 30px;
     display: flex;
     align-items: center;
