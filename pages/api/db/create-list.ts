@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from '@prisma/client'
-import { listResToBlob } from '../../lib/list-util'
-import { isListRes } from '../../lib/types'
-
-const prisma = new PrismaClient()
+import { listResToBlob } from '../../../lib/list-util'
+import { isListRes } from '../../../lib/types'
+import prisma from '../../../prisma/client'
 
 const createList = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'POST' || !isListRes(req.body?.list)) {

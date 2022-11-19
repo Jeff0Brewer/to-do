@@ -8,10 +8,15 @@ import styles from '../styles/List.module.css'
 
 type ListProps = {
     list: ListData,
-    setList: (data: ListData) => void
+    setList: (data: ListData) => void,
+    loaded: boolean
 }
 
 const List: FC<ListProps> = props => {
+    if (!props.loaded) {
+        return <></>
+    }
+
     const [focusArrs, setFocusArrs] = useState<Array<Array<number>>>([[0]])
     const [focusInd, setFocusInd] = useState<number>(-1)
     const titleRef = useRef<HTMLInputElement>(null)

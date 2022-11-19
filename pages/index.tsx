@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSession } from 'next-auth/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import ListInterface from '../components/list-interface'
-import List from '../components/list'
-import { getBlankList } from '../lib/list-util'
-import { ListData } from '../lib/types'
+import Lists from '../components/lists'
+import SignIn from '../components/sign-in'
 
 const Home: NextPage = () => {
-    const [list, setList] = useState<ListData>(getBlankList())
+    const { data: session, status: sessionStatus } = useSession()
+    if (sessionStatus === 'loading') { return <></> }
+
     return (
-        <>
+        <main>
             <Head>
                 <title>to do</title>
                 <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <ListInterface list={list} setList={setList} />
-            <List list={list} setList={setList} />
-        </>
+            </Head>{
+                session
+                    ? <Lists session={session} />
+                    : <SignIn />
+            }
+        </main>
 
     )
 }

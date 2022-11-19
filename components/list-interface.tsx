@@ -1,5 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
-import { IoMdTrash, IoMdSearch } from 'react-icons/io'
+import { Session } from 'next-auth'
+import { signOut } from 'next-auth/react'
+import { IoMdTrash, IoMdSearch, IoMdLogOut } from 'react-icons/io'
 import { HiPlus } from 'react-icons/hi'
 import SearchInterface from './search-interface'
 import LabelButton from './label-button'
@@ -19,7 +21,9 @@ const postBody = (data: object) => {
 
 type ListInterfaceProps = {
     list: ListData,
-    setList: (list: ListData) => void
+    setList: (list: ListData) => void,
+    setLoaded: (loaded: boolean) => void,
+    session: Session
 }
 
 const ListInterface: FC<ListInterfaceProps> = props => {
@@ -28,7 +32,8 @@ const ListInterface: FC<ListInterfaceProps> = props => {
     const updateIdRef = useRef<number>(0)
 
     useEffect(() => {
-        fetch('/api/get-lists')
+        const email = props.session.user.email
+        fetch('/api/db/get-lists', postBody({ email }))
             .then(data => data.json())
             .then((res: Array<ListRes>) => {
                 const lists: Array<ListData> = res.map(list => listResToData(list))
@@ -36,6 +41,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
                 if (lists.length) {
                     props.setList(lists[0])
                 }
+                props.setLoaded(true)
             })
     }, [])
 
@@ -55,16 +61,16 @@ const ListInterface: FC<ListInterfaceProps> = props => {
             newLists.push(list)
         }
         setLists(newLists)
-        fetch('/api/update-list', postBody({ list }))
+        fetch('/api/db/update-list', postBody({ list }))
     }
 
     const newList = () => {
         const newLists = [...lists]
-        const list = getBlankList()
+        const list = getBlankList(props.session.user.email)
         newLists.push(list)
         props.setList(list)
         setLists(newLists)
-        fetch('/api/create-list', postBody({ list }))
+        fetch('/api/db/create-list', postBody({ list }))
     }
 
     const deleteList = (key: string) => {
@@ -72,11 +78,11 @@ const ListInterface: FC<ListInterfaceProps> = props => {
         const ind = lists.map(list => list.key).indexOf(key)
         newLists.splice(ind, 1)
         if (newLists.length === 0) {
-            newLists.push(getBlankList())
+            newLists.push(getBlankList(props.session.user.email))
         }
         setLists(newLists)
         props.setList(newLists[Math.max(0, ind - 1)])
-        fetch('/api/delete-list', postBody({ key }))
+        fetch('/api/db/delete-list', postBody({ key }))
     }
 
     const toggleSearch = () => {
@@ -91,6 +97,7 @@ const ListInterface: FC<ListInterfaceProps> = props => {
                     <LabelButton symbol={<HiPlus/>} text={'create'} onClick={newList} />
                     <LabelButton symbol={<IoMdTrash/>} text={'delete'} onClick={() => deleteList(props.list.key)} />
                     <LabelButton symbol={<IoMdSearch/>} text={'search'} onClick={toggleSearch} />
+                    <LabelButton symbol={<IoMdLogOut />} text={'log out'} onClick={() => signOut()} />
                 </div>
         }
         </section>
