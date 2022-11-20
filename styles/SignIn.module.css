@@ -1,32 +1,106 @@
-.wrap {
+.header {
+    position: relative;
     width: 100vw;
+    min-height: 60vh;
+    padding-bottom: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: linear-gradient(to bottom, var(--highlight-color) 0%, #000 60%);
 }
 
-.header {
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, #000 0%, rgba(0, 0, 0, 0) 100%);
+    animation: fadein 2000ms ease-out;
+}
+
+.title {
+    position: relative;
     font-family: 'Poppins', sans-serif;
     font-size: 50px;
     margin: 100px 0 0 0;
     padding: 0;
 }
 
-.subheader {
+.description {
+    position: relative;
     font-size: 16px;
 }
 
 .signIn {
+    position: relative;
     margin: 20px;
     padding: 15px 25px;
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
     border: 1px solid #fff;
     border-radius: 5px;
-    background: linear-gradient(45deg, var(--highlight-color) 0%, transparent 120%);
+    background-color: #000;
     transition: background-color 500ms ease;
 }
 
 .signIn:hover {
     background-color: var(--highlight-color)
+}
+
+.video {
+    position: relative;
+    width: 100vw;
+    max-width: min(700px, 90vw);
+    min-height: 40vh;
+    opacity: 0;
+    animation: videoin 1000ms ease-out;
+    animation-delay: 1500ms;
+    animation-fill-mode: forwards;
+}
+
+.demo {
+    position: relative;
+    background: radial-gradient(circle at center, #fff 0%, #fff 3%, #000 6%, #000 100%);
+    background-size: 30px 30px;
+    animation: gridLoop 4000ms linear infinite;
+    border-width: 0 0 1px 0;
+}
+
+.demoFade {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0) 100%);
+    width: 100%;
+    padding: min(3vw, 50px) 0;
+}
+
+@keyframes gridLoop {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 -30px;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes videoin {
+    from {
+        opacity: 0;
+        top: 0;
+    }
+    to {
+        opacity: 1;
+        top: max(-10vw, -100px);
+    }
 }
