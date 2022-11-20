@@ -12,7 +12,7 @@ const SignIn: FC<Record<string, never>> = () => {
             </section>
             <section className={styles.demo}>
                 <div className={styles.demoFade}>
-                    <video className={styles.video} autoPlay muted loop>
+                    <video className={styles.video} autoPlay muted loop playsInline>
                         <source src='./to-do-loop.mp4' type='video/mp4'/>
                     </video>
                 </div>
