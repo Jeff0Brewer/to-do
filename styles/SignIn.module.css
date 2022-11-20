@@ -62,7 +62,7 @@
 
 .demo {
     position: relative;
-    background: radial-gradient(circle at center, #fff 0%, #fff 3%, #000 6%, #000 100%);
+    background: radial-gradient(circle at center, #fff 0%, #fff 5%, #000 8%, #000 100%);
     background-size: 30px 30px;
     animation: gridLoop 4000ms linear infinite;
     border-width: 0 0 1px 0;
