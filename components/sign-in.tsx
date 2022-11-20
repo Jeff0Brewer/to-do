@@ -4,13 +4,20 @@ import styles from '../styles/SignIn.module.css'
 
 const SignIn: FC<Record<string, never>> = () => {
     return (
-        <section className={styles.center}>
-            <div className={styles.wrap}>
-                <h1 className={styles.header}>To Do</h1>
-                <p className={styles.subheader}>A minimal to do list app.</p>
+        <div>
+            <section className={styles.header}>
+                <h1 className={styles.title}>To Do</h1>
+                <p className={styles.description}>A minimal to do list app.</p>
                 <button className={styles.signIn} onClick={() => signIn('google')}>log in</button>
-            </div>
-        </section>
+            </section>
+            <section className={styles.demo}>
+                <div className={styles.demoFade}>
+                    <video className={styles.video} autoPlay muted loop>
+                        <source src='./to-do-loop.mp4' type='video/mp4'/>
+                    </video>
+                </div>
+            </section>
+        </div>
     )
 }
 
