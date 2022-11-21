@@ -34,10 +34,13 @@ const Item: FC<ItemProps> = props => {
     }
 
     useEffect(() => {
-        if (props.focus && textRef.current) {
+        if (!textRef.current) { return }
+        if (props.focus) {
             textRef.current.focus()
             const len = textRef.current.value.length
             textRef.current.setSelectionRange(len, len)
+        } else {
+            textRef.current.blur()
         }
     }, [props.focus])
 
