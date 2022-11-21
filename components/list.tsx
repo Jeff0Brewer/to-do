@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useRef } from 'react'
 import { ListData, ItemData } from '../lib/types'
 import { arrayIndexOf, arrayEqual } from '../lib/array'
 import { getBlankItem, getItem, getSiblings, getTotalChildren, getFocusArrs } from '../lib/list-util'
-import { swipeStartHandler, swipeEndHandler } from '../lib/touch'
+import { swipeStartHandler, swipeEndHandler, isTouchDevice } from '../lib/touch'
 import Item from './item'
 import styles from '../styles/List.module.css'
 
@@ -25,7 +25,7 @@ const List: FC<ListProps> = props => {
     }, [props.list])
 
     useEffect(() => {
-        if (focusInd === -1 && titleRef.current) {
+        if (focusInd === -1 && titleRef.current && !isTouchDevice()) {
             titleRef.current.focus()
         }
         const swipeEnd = (e: TouchEvent) => { swipeEndHandler(e, decrementIndent, incrementIndent) }

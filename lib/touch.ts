@@ -49,7 +49,12 @@ const swipeEndHandler = (e: TouchEvent, leftSwipe: () => void, rightSwipe: () =>
     }
 }
 
+const isTouchDevice = () => {
+    return navigator.maxTouchPoints > 1
+}
+
 export {
     swipeStartHandler,
-    swipeEndHandler
+    swipeEndHandler,
+    isTouchDevice
 }
