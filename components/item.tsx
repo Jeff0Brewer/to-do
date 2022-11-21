@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import styles from '../styles/List.module.css'
 
 type ItemProps = {
@@ -13,6 +13,7 @@ type ItemProps = {
 }
 
 const Item: FC<ItemProps> = props => {
+    const [animating, setAnimating] = useState<boolean>(false)
     const textRef = useRef<HTMLInputElement>(null)
 
     const keyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,6 +24,13 @@ const Item: FC<ItemProps> = props => {
             e.preventDefault()
             props.removeItem()
         }
+    }
+
+    const checkHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            setAnimating(true)
+        }
+        props.setCompleted(e.target.checked)
     }
 
     useEffect(() => {
@@ -39,10 +47,11 @@ const Item: FC<ItemProps> = props => {
             onMouseDown={props.setFocus}
         >
             <input
-                className={styles.itemCheck}
+                className={`${styles.itemCheck} ${animating && styles.itemChecked}`}
                 type="checkbox"
                 defaultChecked={props.completed}
-                onChange={e => props.setCompleted(e.target.checked)}
+                onChange={checkHandler}
+                onAnimationEnd={() => setAnimating(false)}
             />
             <input
                 className={styles.itemText}

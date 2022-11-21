@@ -14,6 +14,9 @@ const getLists = async (req: NextApiRequest, res: NextApiResponse<GetResponse>) 
     const blobs: Array<ListBlob> = await prisma.list.findMany({
         where: {
             userEmail: req.body.email
+        },
+        orderBy: {
+            date: 'desc'
         }
     })
     const data: Array<ListData> = blobs.map(blob => listBlobToData(blob))
