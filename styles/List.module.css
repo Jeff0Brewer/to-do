@@ -50,6 +50,7 @@
 
 .itemCheck {
     position: relative;
+    display: block;
     appearance: none;
     background-color: transparent;
     width: 16px;
