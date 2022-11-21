@@ -52,7 +52,7 @@
 .video {
     position: relative;
     width: 100vw;
-    max-width: min(700px, 90vw);
+    max-width: min(700px, 95vw);
     min-height: 40vh;
     opacity: 0;
     animation: videoin 1000ms ease-out;
@@ -78,10 +78,10 @@
 
 @keyframes gridLoop {
     from {
-        background-position: 0 0;
+        background-position: center 0;
     }
     to {
-        background-position: 0 -30px;
+        background-position: center -30px;
     }
 }
 
