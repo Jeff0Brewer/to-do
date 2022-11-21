@@ -72,10 +72,14 @@
     height: 7px;
     background-color: #000;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+
+.itemChecked::before {
     animation: checkFade 600ms ease-out;
 }
 
-.itemCheck:checked::after {
+.itemChecked::after {
     content: "";
     display: block;
     position: absolute;
