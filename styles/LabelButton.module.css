@@ -16,7 +16,7 @@
 }
 
 .symbol {
-    padding: 0 5px;
+    min-width: 40px;
     font-size: 30px;
     display: flex;
     align-items: center;
@@ -48,5 +48,9 @@
 @media (max-width: 900px) {
     .button:hover .symbol {
         color: var(--hover-color);
+    }
+
+    .symbol {
+        font-size: 25px;
     }
 }
